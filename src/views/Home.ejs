@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airbnb</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <main class="min-h-screen py-12 px-4">
+        <div class="max-w-2xl mx-auto">
+            <h1 class="text-4xl font-bold text-center text-gray-900 mb-8">
+                Welcome to Airbnb Home Page
+            </h1>
+            
+            <a class="inline-block w-full text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 mb-8" 
+                href="/host/add-home">
+                Registered Homes
+            </a>
+            
+            <ul class="space-y-3">
+                <% registeredHomes.forEach(house => { %>
+                    <li class="bg-white p-4 rounded-lg shadow hover:shadow-md transition border-l-4 border-blue-500">
+                        <%= house.houseName %>
+                    </li>
+                <% }); %>
+            </ul>
+        </div>
+    </main>
+</body>
+</html>

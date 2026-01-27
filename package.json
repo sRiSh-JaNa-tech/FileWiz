@@ -2,9 +2,12 @@
   "name": "filehelper",
   "version": "1.0.0",
   "description": "Presenting EngiSense",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tailwind": "npx @tailwindcss/cli -i ./src/views/input.css -o ./src/public/output.css --watch",
+    "dev": "concurrently \"nodemon src/server.js\" \"npm run tailwind\"",
+    "start": "node src/server.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +22,7 @@
   },
   "homepage": "https://github.com/sRiSh-JaNa-tech/EngiSense#readme",
   "dependencies": {
+    "@tailwindcss/cli": "^4.1.18",
     "autoprefixer": "^10.4.23",
     "concurrently": "^9.2.1",
     "ejs": "^4.0.1",

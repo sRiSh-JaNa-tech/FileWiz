@@ -6,10 +6,14 @@ const rootDir = require('./utils/pathUtils');
 const userRouter = require('./routes/userRouter');
 
 app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
+    req.user = null; // Simulating an unauthenticated user
+    console.log(`${req.method} ${req.url}`);
+    next();
 });
-app.use(userRouter);
+
+app.get('/', (req, res) => {
+    res.render('Home', { title : 'Home' });
+});
 
 const server = http.createServer(app);
 server.listen(PORT, () => {

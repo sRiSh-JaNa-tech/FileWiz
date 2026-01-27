@@ -1,50 +1,82 @@
 <nav class="bg-white border-b border-gray-200">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="flex justify-between h-16 items-center">
-        <div class="shrink-0 text-xl font-bold text-blue-600">
-            FileHelper
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex justify-between h-16 items-center">
+      <!-- Logo -->
+        <div class="flex items-center space-x-2">
+            <!-- Icon -->
+            <img 
+                src="/assets/open-folder.png"
+                alt="FileWiz Logo"
+                class="h-7 w-7"
+            />
+            <!-- Text -->
+            <span class="text-xl font-bold text-blue-600">
+                FileWiz
+            </span>
         </div>
-        <div class="hidden md:flex space-x-8">
-            <a href="/" class="text-gray-700 hover:text-blue-600">Home</a>
-            <a href="/Peek" class="text-gray-700 hover:text-blue-600">Peek</a>
-            <a href="/Convert" class="text-gray-700 hover:text-blue-600">Convert PDF</a>
-            <a href="/Compress" class="text-gray-700 hover:text-blue-600">Compress</a>
-        </div>
-        <!-- CTA -->
-        <div class="hidden md:flex items-center space-x-3">
-            <a href="/login"
-                class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50">
-                Login
-            </a>
 
-            <a href="/signup"
-                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                Sign Up
-            </a>
-        </div>
+
+      <!-- Desktop Links -->
+      <div class="hidden md:flex space-x-8">
+        <a href="/" class="text-gray-700 hover:text-blue-600">Home</a>
+        <a href="/Peek" class="text-gray-700 hover:text-blue-600">Peek</a>
+        <a href="/Convert" class="text-gray-700 hover:text-blue-600">Convert PDF</a>
+        <a href="/Compress" class="text-gray-700 hover:text-blue-600">Compress</a>
+      </div>
+
+      <!-- Desktop CTA -->
+      <div class="hidden md:flex items-center space-x-3">
+        <a href="/login"
+           class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50">
+          Login
+        </a>
+        <a href="/signup"
+           class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+          Sign Up
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button id="menu-btn"
+        class="md:hidden inline-flex items-center justify-center p-2 rounded-lg text-gray-600 hover:bg-gray-100 focus:outline-none">
+        ☰
+      </button>
+
     </div>
+  </div>
 
-<!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
-        <div class="pt-2 space-y-2">
-            <a href="/login"
-                class="block text-center border border-blue-600 text-blue-600 py-2 rounded-lg">
-                Login
-            </a>
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden border-t bg-white px-4 py-4 space-y-3">
+    <a href="/" class="block text-gray-700 hover:text-blue-600">Home</a>
+    <a href="/Peek" class="block text-gray-700 hover:text-blue-600">Peek</a>
+    <a href="/Convert" class="block text-gray-700 hover:text-blue-600">Convert PDF</a>
+    <a href="/Compress" class="block text-gray-700 hover:text-blue-600">Compress</a>
 
-            <a href="/signup"
-                class="block text-center bg-blue-600 text-white py-2 rounded-lg">
-                Sign Up
-            </a>
-        </div>
-    </div>
+    <hr>
+
+    <a href="/login"
+       class="block text-center border border-blue-600 text-blue-600 py-2 rounded-lg">
+      Login
+    </a>
+    <a href="/signup"
+       class="block text-center bg-blue-600 text-white py-2 rounded-lg">
+      Sign Up
+    </a>
+  </div>
 </nav>
 
 <script>
-    const btn = document.getElementById('menu-btn');
-    const menu = document.getElementById('mobile-menu');
+  const btn = document.getElementById('menu-btn');
+  const menu = document.getElementById('mobile-menu');
 
-    btn.addEventListener('click', () => {
-        menu.classList.toggle('hidden');
-    });
+  btn.addEventListener('click', () => {
+    menu.classList.toggle('hidden');
+  });
+
+  // Close mobile menu on resize to desktop
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 768) {
+      menu.classList.add('hidden');
+    }
+  });
 </script>

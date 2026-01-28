@@ -6,11 +6,114 @@
     <title><%= title %></title>
     <link href="/output.css" rel="stylesheet">
 </head>
-<body>
+<body class="min-h-screen bg-gray-50 flex flex-col">
     <header>
         <%- include('partials/nav') %>
     </header>
-    <main>     
+    <main class="flex-1 bg-gray-50">
+    <!-- Hero Section -->
+    <section class="max-w-7xl mx-auto px-4 py-16 text-center">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800">
+        Your All-in-One File Management Toolkit
+        </h1>
+
+        <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+        FileHelper brings powerful file tools together — simple, fast, and secure.
+        </p>
+    </section>
+
+    <!-- Product Cards -->
+    <section class="max-w-7xl mx-auto px-4 pb-20">
+        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+
+        <!-- Card 1: Peek -->
+        <a href="/peek/display"
+            class="group bg-white rounded-xl shadow hover:shadow-xl transition p-6">
+            <div class="mb-4">
+                <img
+                src="/assets/stare.png"
+                alt="Peek Files"
+                class="h-12 w-12 mx-auto"
+                />
+            </div>
+            <h3 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600">
+                Peek Files
+            </h3>
+            <p class="mt-2 text-gray-600">
+                Preview files instantly without opening them.
+            </p>
+        </a>
+
+        <!-- Card 2: Convert -->
+        <a href="/Convert"
+            class="group bg-white rounded-xl shadow hover:shadow-xl transition p-6">
+            <div class="mb-4">
+                <img
+                src="/assets/convert.png"
+                alt="Peek Files"
+                class="h-12 w-12 mx-auto"
+                />
+            </div>
+            <h3 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600">
+            Convert PDF
+            </h3>
+            <p class="mt-2 text-gray-600">
+            Convert PDFs to multiple formats with ease.
+            </p>
+        </a>
+
+        <!-- Card 3: Compress -->
+        <a href="/Compress"
+            class="group bg-white rounded-xl shadow hover:shadow-xl transition p-6">
+            <div class="mb-4">
+                <img
+                src="/assets/folder.png"
+                alt="Peek Files"
+                class="h-12 w-12 mx-auto"
+                />
+            </div>
+            <h3 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600">
+            Compress Files
+            </h3>
+            <p class="mt-2 text-gray-600">
+            Reduce file size without losing quality.
+            </p>
+        </a>
+
+        <!-- Card 4: RESERVED -->
+        <!-- TODO: Add feature (e.g., Merge PDFs) -->
+        <div class="bg-white rounded-xl border-2 border-dashed border-gray-300 p-6 flex items-center justify-center text-gray-400">
+            Coming Soon
+        </div>
+
+        <!-- Card 5: RESERVED -->
+        <!-- TODO: Add feature (e.g., Split PDFs) -->
+        <div class="bg-white rounded-xl border-2 border-dashed border-gray-300 p-6 flex items-center justify-center text-gray-400">
+            Coming Soon
+        </div>
+
+        <!-- Card 6: RESERVED -->
+        <!-- TODO: Add feature (e.g., File Encryption) -->
+        <div class="bg-white rounded-xl border-2 border-dashed border-gray-300 p-6 flex items-center justify-center text-gray-400">
+            Coming Soon
+        </div>
+
+        <!-- Card 7: RESERVED -->
+        <!-- TODO: Add feature (e.g., OCR Scanner) -->
+        <div class="bg-white rounded-xl border-2 border-dashed border-gray-300 p-6 flex items-center justify-center text-gray-400">
+            Coming Soon
+        </div>
+
+        <!-- Card 8: RESERVED -->
+        <!-- TODO: Add feature (e.g., Cloud Upload) -->
+        <div class="bg-white rounded-xl border-2 border-dashed border-gray-300 p-6 flex items-center justify-center text-gray-400">
+            Coming Soon
+        </div>
+
+        </div>
+    </section>
+
     </main>
+
 </body>
 </html>

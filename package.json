@@ -1,5 +1,5 @@
 {
-  "name": "filehelper",
+  "name": "filewiz",
   "version": "1.0.0",
   "description": "Presenting EngiSense",
   "main": "server.js",
@@ -25,6 +25,7 @@
     "@tailwindcss/cli": "^4.1.18",
     "autoprefixer": "^10.4.23",
     "concurrently": "^9.2.1",
+    "cookie-parser": "^1.4.7",
     "ejs": "^4.0.1",
     "esbuild": "^0.27.2",
     "express": "^5.2.1",

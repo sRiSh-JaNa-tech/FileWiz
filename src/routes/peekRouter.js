@@ -4,9 +4,8 @@ const userRouter = express.Router();
 
 const registeredHomes = [];
 
-userRouter.get("/", (req, res, next) => {
-    console.log(registeredHomes);
-    res.render('Home', {registeredHomes});
+userRouter.get("/display", (req, res, next) => {
+    res.render('peek/Peek');
 });
 
 module.exports = userRouter;

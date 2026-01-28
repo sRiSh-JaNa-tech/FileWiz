@@ -1,12 +1,12 @@
 const path = require('path');
 const express = require('express');
-const peekRouter = express.Router();
+const loginRouter = express.Router();
 
-peekRouter.get("/login", (req, res, next) => {
-    res.render('login/login',{error : null});
+loginRouter.get("/login", (req, res, next) => {
+    res.render('login/login',{error : null,title : 'Login'});
 });
 
-peekRouter.post("/login", (req, res, next) => {
+loginRouter.post("/login", (req, res, next) => {
     const { email, password } = req.body;
     console.log(email, password);
     console.log(req.body);
@@ -15,8 +15,12 @@ peekRouter.post("/login", (req, res, next) => {
         req.user = { email };
         return res.redirect('/');
     } else {
-        return res.render('login/login',{error : 'Invalid email or password'});
+        return res.render('login/login',{error : 'Invalid email or password', title : 'Login'});
     }
 });
 
-module.exports = peekRouter;
+loginRouter.get("/signup", (req, res, next) => {
+    res.render('login/signup',{error : null, title : 'Signup'});
+});
+
+module.exports = loginRouter;

@@ -204,6 +204,12 @@
   }
 }
 @layer utilities {
+  .absolute {
+    position: absolute;
+  }
+  .relative {
+    position: relative;
+  }
   .mx-3 {
     margin-inline: calc(var(--spacing) * 3);
   }

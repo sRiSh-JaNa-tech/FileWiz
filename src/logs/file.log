@@ -1,0 +1,50 @@
+    from logger import log
+  File "C:\Users\srish\Desktop\FileWiz\src\python\scripts\logger.py", line 5, in <module>
+    logging.basicConfig(
+  File "C:\msys64\ucrt64\lib\python3.12\logging\__init__.py", line 2118, in basicConfig
+    h = FileHandler(filename, mode,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\msys64\ucrt64\lib\python3.12\logging\__init__.py", line 1231, in __init__
+    StreamHandler.__init__(self, self._open())
+                                 ^^^^^^^^^^^^
+  File "C:\msys64\ucrt64\lib\python3.12\logging\__init__.py", line 1263, in _open
+    return open_func(self.baseFilename, self.mode,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\srish\\logs\\file.log'
+[2026-01-29 13:22:37] [peek-service] INFO: User uploaded archive: Airbnb.zip
+[2026-01-29 13:22:37] [python_exec] ERROR: Command failed: python "C:\Users\srish\Desktop\FileWiz\src\python\scripts\read_zip.py" "C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769692957486-650327548.zip"
+Traceback (most recent call last):
+  File "C:\Users\srish\Desktop\FileWiz\src\python\scripts\read_zip.py", line 6, in <module>
+    from logger import log
+  File "C:\Users\srish\Desktop\FileWiz\src\python\scripts\logger.py", line 5, in <module>
+    logging.basicConfig(
+  File "C:\msys64\ucrt64\lib\python3.12\logging\__init__.py", line 2118, in basicConfig
+    h = FileHandler(filename, mode,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\msys64\ucrt64\lib\python3.12\logging\__init__.py", line 1231, in __init__
+    StreamHandler.__init__(self, self._open())
+                                 ^^^^^^^^^^^^
+  File "C:\msys64\ucrt64\lib\python3.12\logging\__init__.py", line 1263, in _open
+    return open_func(self.baseFilename, self.mode,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\srish\\logs\\file.log'
+[2026-01-29 13:22:37] [peek-service] ERROR: Error processing zip: Command failed: python "C:\Users\srish\Desktop\FileWiz\src\python\scripts\read_zip.py" "C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769692957486-650327548.zip"
+Traceback (most recent call last):
+  File "C:\Users\srish\Desktop\FileWiz\src\python\scripts\read_zip.py", line 6, in <module>
+    from logger import log
+  File "C:\Users\srish\Desktop\FileWiz\src\python\scripts\logger.py", line 5, in <module>
+    logging.basicConfig(
+  File "C:\msys64\ucrt64\lib\python3.12\logging\__init__.py", line 2118, in basicConfig
+    h = FileHandler(filename, mode,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\msys64\ucrt64\lib\python3.12\logging\__init__.py", line 1231, in __init__
+    StreamHandler.__init__(self, self._open())
+                                 ^^^^^^^^^^^^
+  File "C:\msys64\ucrt64\lib\python3.12\logging\__init__.py", line 1263, in _open
+    return open_func(self.baseFilename, self.mode,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\srish\\logs\\file.log'
+[2026-01-29 13:27:29] [peek-service] INFO: User uploaded archive: Airbnb.zip
+[2026-01-29 13:27:30] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769693249990-304001352.zip
+[2026-01-29 13:29:05] [peek-service] INFO: User uploaded archive: Airbnb.zip
+[2026-01-29 13:29:05] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769693345199-151586158.zip

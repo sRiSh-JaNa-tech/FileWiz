@@ -1,50 +1,33 @@
-    from logger import log
-  File "C:\Users\srish\Desktop\FileWiz\src\python\scripts\logger.py", line 5, in <module>
-    logging.basicConfig(
-  File "C:\msys64\ucrt64\lib\python3.12\logging\__init__.py", line 2118, in basicConfig
-    h = FileHandler(filename, mode,
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\msys64\ucrt64\lib\python3.12\logging\__init__.py", line 1231, in __init__
-    StreamHandler.__init__(self, self._open())
-                                 ^^^^^^^^^^^^
-  File "C:\msys64\ucrt64\lib\python3.12\logging\__init__.py", line 1263, in _open
-    return open_func(self.baseFilename, self.mode,
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\srish\\logs\\file.log'
-[2026-01-29 13:22:37] [peek-service] INFO: User uploaded archive: Airbnb.zip
-[2026-01-29 13:22:37] [python_exec] ERROR: Command failed: python "C:\Users\srish\Desktop\FileWiz\src\python\scripts\read_zip.py" "C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769692957486-650327548.zip"
-Traceback (most recent call last):
-  File "C:\Users\srish\Desktop\FileWiz\src\python\scripts\read_zip.py", line 6, in <module>
-    from logger import log
-  File "C:\Users\srish\Desktop\FileWiz\src\python\scripts\logger.py", line 5, in <module>
-    logging.basicConfig(
-  File "C:\msys64\ucrt64\lib\python3.12\logging\__init__.py", line 2118, in basicConfig
-    h = FileHandler(filename, mode,
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\msys64\ucrt64\lib\python3.12\logging\__init__.py", line 1231, in __init__
-    StreamHandler.__init__(self, self._open())
-                                 ^^^^^^^^^^^^
-  File "C:\msys64\ucrt64\lib\python3.12\logging\__init__.py", line 1263, in _open
-    return open_func(self.baseFilename, self.mode,
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\srish\\logs\\file.log'
-[2026-01-29 13:22:37] [peek-service] ERROR: Error processing zip: Command failed: python "C:\Users\srish\Desktop\FileWiz\src\python\scripts\read_zip.py" "C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769692957486-650327548.zip"
-Traceback (most recent call last):
-  File "C:\Users\srish\Desktop\FileWiz\src\python\scripts\read_zip.py", line 6, in <module>
-    from logger import log
-  File "C:\Users\srish\Desktop\FileWiz\src\python\scripts\logger.py", line 5, in <module>
-    logging.basicConfig(
-  File "C:\msys64\ucrt64\lib\python3.12\logging\__init__.py", line 2118, in basicConfig
-    h = FileHandler(filename, mode,
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\msys64\ucrt64\lib\python3.12\logging\__init__.py", line 1231, in __init__
-    StreamHandler.__init__(self, self._open())
-                                 ^^^^^^^^^^^^
-  File "C:\msys64\ucrt64\lib\python3.12\logging\__init__.py", line 1263, in _open
-    return open_func(self.baseFilename, self.mode,
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\srish\\logs\\file.log'
-[2026-01-29 13:27:29] [peek-service] INFO: User uploaded archive: Airbnb.zip
-[2026-01-29 13:27:30] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769693249990-304001352.zip
-[2026-01-29 13:29:05] [peek-service] INFO: User uploaded archive: Airbnb.zip
-[2026-01-29 13:29:05] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769693345199-151586158.zip
+[2026-01-30 18:17:56] [peek-service] INFO: User uploaded archive: Airbnb.zip
+[2026-01-30 18:17:57] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769797076063-526841005.zip
+[2026-01-30 18:19:07] [peek-service] INFO: User uploaded archive: archive1.zip
+[2026-01-30 18:19:07] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769797147578-228989044.zip
+[2026-01-30 18:43:16] [peek-service] INFO: User uploaded archive: archive1.zip
+[2026-01-30 18:43:17] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769798596673-278987275.zip
+[2026-01-30 18:54:58] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-30 18:54:58] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769799298383-70651367.zip
+[2026-01-30 19:09:41] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-30 19:09:42] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769800181803-451285525.zip
+[2026-01-30 19:11:24] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-30 19:11:24] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769800284014-918497817.zip
+[2026-01-30 19:12:11] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-30 19:12:12] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769800331886-850435248.zip
+[2026-01-30 19:15:46] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-30 19:15:47] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769800546970-101901137.zip
+[2026-01-30 19:18:05] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-30 19:18:06] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769800685941-221923512.zip
+[2026-01-30 19:18:35] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-30 19:18:35] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769800715430-367551844.zip
+[2026-01-30 19:20:30] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-30 19:20:30] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769800830512-706313388.zip
+[2026-01-30 19:27:03] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-30 19:27:34] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-30 19:32:56] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-30 20:07:40] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-30 20:08:18] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-30 20:09:06] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-30 20:23:28] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-30 20:23:57] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-30 20:24:14] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-30 20:25:51] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-30 20:26:08] [peek-service] INFO: User uploaded archive: archive.zip

@@ -1,25 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title><%= title %></title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="/output.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="/output.css" rel="stylesheet" />
+
+  <style>
+    /* 🔑 Monaco NEEDS explicit height */
+    #editor {
+      height: 100%;
+      width: 100%;
+    }
+  </style>
 </head>
 
-<body class="min-h-screen bg-gray-50 flex flex-col">
+<body class="min-h-screen bg-gray-100 flex flex-col">
 
   <!-- Navbar -->
-  <header>
+  <header class="shrink-0">
     <%- include('../partials/nav') %>
   </header>
 
-  <main class="flex-1 max-w-5xl mx-auto px-4 py-10">
-    
+  <!-- Main Layout -->
+  <main class="flex-1 flex justify-center items-stretch px-4 py-4">
+
+    <!-- Outer Container -->
+    <div class="flex w-full max-w-7xl bg-white rounded-lg shadow border overflow-hidden">
+
+      <div class="flex w-full max-w-7xl bg-white rounded-lg shadow border overflow-hidden">
+
+  <!-- FILE TREE -->
+  <aside class="w-72 border-r bg-gray-50 overflow-y-auto p-3 shrink-0">
+    <h3 class="text-sm font-semibold text-gray-700 mb-3">Files</h3>
+
+    <% function renderTree(nodes, prefix = '') { %>
+      <% nodes.forEach(node => { %>
+
+        <% if (node.type === 'folder') { %>
+          <div class="font-medium text-blue-600 mt-1">
+            📁 <%= node.name %>
+          </div>
+          <div class="ml-4">
+            <%- renderTree(node.children, prefix + node.name + '/') %>
+          </div>
+
+        <% } else { %>
+          <div
+            class="cursor-pointer text-sm text-gray-700 hover:bg-gray-200 rounded px-2 py-1 ml-2"
+            onclick="openFile('<%= prefix + node.name %>')"
+          >
+            📄 <%= node.name %>
+          </div>
+        <% } %>
+
+      <% }) %>
+    <% } %>
+
+    <%- renderTree(tree) %>
+
+    <!-- File actions -->
+    <div class="mt-4 space-y-2">
+      <button onclick="createFile()" class="w-full text-sm bg-gray-200 rounded px-2 py-1">+ File</button>
+      <button onclick="createFolder()" class="w-full text-sm bg-gray-200 rounded px-2 py-1">+ Folder</button>
+      <button onclick="renameItem()" class="w-full text-sm bg-gray-200 rounded px-2 py-1">Rename</button>
+      <button onclick="deleteItem()" class="w-full text-sm bg-red-200 rounded px-2 py-1">Delete</button>
+    </div>
+  </aside>
+
+  <!-- EDITOR COLUMN -->
+  <section class="flex-1 flex flex-col">
+
+    <!-- TOOLBAR -->
+    <div class="flex items-center justify-between border-b px-4 py-2 bg-gray-50">
+      <span id="current-file" class="text-sm text-gray-600">
+        No file selected
+      </span>
+
+      <div class="space-x-2">
+        <button
+          onclick="saveFile()"
+          class="bg-blue-600 text-white px-4 py-1.5 rounded hover:bg-blue-700 text-sm"
+        >
+          Save
+        </button>
+
+        <button
+          onclick="updateAndDownload()"
+          class="bg-green-600 text-white px-4 py-1.5 rounded hover:bg-green-700 text-sm"
+        >
+          Update & Download
+        </button>
+      </div>
+    </div>
+
+    <!-- EDITOR -->
+    <div class="flex-1 relative">
+      <div id="editor"></div>
+    </div>
+
+  </section>
+
+</div>
+
+    </div>
   </main>
-  <script>
-    
-  </script>
+
+  <!-- Monaco Loader -->
+  <%- include('../partials/peekRes') %>
 
 </body>
 </html>

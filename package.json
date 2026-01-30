@@ -23,6 +23,8 @@
   "homepage": "https://github.com/sRiSh-JaNa-tech/EngiSense#readme",
   "dependencies": {
     "@tailwindcss/cli": "^4.1.18",
+    "adm-zip": "^0.5.16",
+    "archiver": "^7.0.1",
     "autoprefixer": "^10.4.23",
     "concurrently": "^9.2.1",
     "cookie-parser": "^1.4.7",

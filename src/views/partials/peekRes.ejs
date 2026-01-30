@@ -1,0 +1,137 @@
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
+
+<script>
+const workspaceId = "<%= workspaceId %>";
+let editor = null;
+let currentFile = null;
+
+require.config({
+    paths: {
+    vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs"
+    }
+});
+
+require(["vs/editor/editor.main"], function () {
+    editor = monaco.editor.create(document.getElementById("editor"), {
+    value: "// Select a file from the left panel",
+    language: "plaintext",
+    theme: "vs-dark",
+    automaticLayout: false
+    });
+
+    // 🔑 FORCE correct sizing
+    window.addEventListener("resize", () => {
+    editor.layout();
+    });
+
+    // Initial layout
+    setTimeout(() => editor.layout(), 0);
+});
+
+async function openFile(filePath) {
+  currentFile = filePath;
+
+  document.getElementById('current-file').textContent =
+    `Editing: ${filePath}`;
+
+  const res = await fetch(
+    `/peek/file?ws=${workspaceId}&path=${encodeURIComponent(filePath)}`
+  );
+
+  const data = await res.json();
+  editor.setValue(data.content || '');
+
+  const ext = filePath.split('.').pop();
+  monaco.editor.setModelLanguage(
+    editor.getModel(),
+    ext || 'plaintext'
+  );
+
+  editor.layout();
+}
+
+async function saveFile() {
+    if (!currentFile) {
+    alert('No file selected');
+    return;
+    }
+
+    const res = await fetch('/peek/file/save', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        ws: workspaceId,
+        path: currentFile,
+        content: editor.getValue()
+    })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+    document.getElementById('current-file').textContent =
+        `Saved: ${currentFile}`;
+    } else {
+    alert(data.error || 'Save failed');
+    }
+}
+
+function updateAndDownload() {
+// Just navigate — browser handles download
+window.location.href = `/peek/download?ws=${workspaceId}`;
+}
+async function createFile() {
+const path = prompt('Enter file path (e.g. src/new.js)');
+if (!path) return;
+
+await fetch('/peek/file/create', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ws: workspaceId, path })
+});
+
+location.reload();
+}
+
+async function createFolder() {
+const path = prompt('Enter folder path (e.g. src/utils)');
+if (!path) return;
+
+await fetch('/peek/folder/create', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ws: workspaceId, path })
+});
+
+location.reload();
+}
+
+async function renameItem() {
+const oldPath = prompt('Old path');
+const newPath = prompt('New path');
+if (!oldPath || !newPath) return;
+
+await fetch('/peek/rename', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ws: workspaceId, oldPath, newPath })
+});
+
+location.reload();
+}
+
+async function deleteItem() {
+const path = prompt('Path to delete');
+if (!path) return;
+
+await fetch('/peek/delete', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ws: workspaceId, path })
+});
+
+location.reload();
+}
+</script>

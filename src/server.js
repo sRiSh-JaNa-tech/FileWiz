@@ -5,6 +5,7 @@ const path = require('path');
 
 const rootDir = require('./utils/pathUtils');
 const peekRouter = require('./routes/peekRouter');
+const compressRouter = require('./routes/compressRouter');
 const loginRouter = require('./routes/loginRouter');
 const isAuthenticated = require('./middlewares/auth.middleware');
 const usageLimit = require('./middlewares/usageLimit.middleware');
@@ -22,6 +23,9 @@ app.get('/', (req, res) => {
 app.use("/auth",loginRouter);
 
 app.use('/peek', peekRouter); // <- isAuthenticated, add this after 
+
+app.use("/compress",compressRouter); // <- isAuthenticated, usageLimit, add this after
+
 
 const server = http.createServer(app);
 server.listen(PORT, () => {

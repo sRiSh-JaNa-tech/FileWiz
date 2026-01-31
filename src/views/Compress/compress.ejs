@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= title %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/output.css" rel="stylesheet">
+</head>
+
+<body class="min-h-screen bg-gray-50 flex flex-col">
+
+  <!-- Navbar -->
+  <header>
+    <%- include('../partials/nav') %>
+  </header>
+
+  <!-- Compress Section -->
+  <main class="flex-1 flex items-center justify-center px-4">
+    <div class="w-full max-w-xl bg-white rounded-xl shadow-lg p-8">
+
+      <!-- Heading -->
+      <h2 class="text-3xl font-bold text-center text-gray-800">
+        Compress Files
+      </h2>
+      <p class="text-center text-gray-600 mt-2">
+        Upload files to compress them into a ZIP archive
+      </p>
+
+      <!-- Error Message -->
+      <% if (error) { %>
+        <div class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-lg text-center">
+          <%= error %>
+        </div>
+      <% } %>
+
+      <!-- Success Message -->
+      <% if (downloadLink) { %>
+        <div class="mt-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg text-center">
+          <p class="font-medium mb-2">Compression successful 🎉</p>
+          <a href="<%= downloadLink %>" class="text-blue-600 underline font-semibold">
+            Download ZIP
+          </a>
+        </div>
+      <% } %>
+
+      <!-- Upload Form -->
+      <form
+        action="/compress/result"
+        method="POST"
+        enctype="multipart/form-data"
+        class="mt-8"
+      >
+
+        <!-- Drag & Drop Area -->
+        <label
+          for="files"
+          id="drop-zone"
+          class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition"
+        >
+          <div class="text-center">
+            <p class="text-gray-700 font-medium">
+              Drag & drop your files here
+            </p>
+            <p class="text-sm text-gray-500 mt-1">
+              or click to browse (multiple files supported)
+            </p>
+          </div>
+
+          <input
+            id="files"
+            name="files"
+            type="file"
+            class="hidden"
+            multiple
+            required
+          />
+        </label>
+
+        <!-- Selected File Names -->
+        <p id="file-name" class="mt-3 text-center text-sm text-gray-600 hidden">
+          Selected files:
+          <span class="font-medium"></span>
+        </p>
+
+        <!-- Compression Level -->
+        <div class="mt-6">
+        <label for="compressionLevel" class="block text-sm font-medium text-gray-700 mb-2">
+            Compression Level
+        </label>
+
+        <select
+            id="compressionLevel"
+            name="compressionLevel"
+            required
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+            <option value="normal" selected>Normal Compression</option>
+            <option value="low">Less Compression (Faster)</option>
+            <option value="extreme">Extreme Compression (Smaller Size)</option>
+        </select>
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="mt-6 w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
+        >
+          Compress Files
+        </button>
+
+      </form>
+
+    </div>
+  </main>
+
+  <!-- Drag & Drop Script -->
+  <script>
+    const input = document.getElementById('files');
+    const dropZone = document.getElementById('drop-zone');
+    const fileName = document.getElementById('file-name');
+    const fileText = fileName.querySelector('span');
+
+    function updateFileNames(files) {
+      fileText.textContent = Array.from(files).map(f => f.name).join(', ');
+      fileName.classList.remove('hidden');
+    }
+
+    input.addEventListener('change', () => {
+      if (input.files.length) {
+        updateFileNames(input.files);
+      }
+    });
+
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('bg-blue-50', 'border-blue-400');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('bg-blue-50', 'border-blue-400');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('bg-blue-50', 'border-blue-400');
+
+      if (e.dataTransfer.files.length) {
+        input.files = e.dataTransfer.files;
+        updateFileNames(e.dataTransfer.files);
+      }
+    });
+  </script>
+
+</body>
+</html>

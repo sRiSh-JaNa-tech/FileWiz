@@ -1,21 +1,3 @@
-[2026-01-30 18:17:56] [peek-service] INFO: User uploaded archive: Airbnb.zip
-[2026-01-30 18:17:57] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769797076063-526841005.zip
-[2026-01-30 18:19:07] [peek-service] INFO: User uploaded archive: archive1.zip
-[2026-01-30 18:19:07] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769797147578-228989044.zip
-[2026-01-30 18:43:16] [peek-service] INFO: User uploaded archive: archive1.zip
-[2026-01-30 18:43:17] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769798596673-278987275.zip
-[2026-01-30 18:54:58] [peek-service] INFO: User uploaded archive: archive.zip
-[2026-01-30 18:54:58] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769799298383-70651367.zip
-[2026-01-30 19:09:41] [peek-service] INFO: User uploaded archive: archive.zip
-[2026-01-30 19:09:42] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769800181803-451285525.zip
-[2026-01-30 19:11:24] [peek-service] INFO: User uploaded archive: archive.zip
-[2026-01-30 19:11:24] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769800284014-918497817.zip
-[2026-01-30 19:12:11] [peek-service] INFO: User uploaded archive: archive.zip
-[2026-01-30 19:12:12] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769800331886-850435248.zip
-[2026-01-30 19:15:46] [peek-service] INFO: User uploaded archive: archive.zip
-[2026-01-30 19:15:47] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769800546970-101901137.zip
-[2026-01-30 19:18:05] [peek-service] INFO: User uploaded archive: archive.zip
-[2026-01-30 19:18:06] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769800685941-221923512.zip
 [2026-01-30 19:18:35] [peek-service] INFO: User uploaded archive: archive.zip
 [2026-01-30 19:18:35] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769800715430-367551844.zip
 [2026-01-30 19:20:30] [peek-service] INFO: User uploaded archive: archive.zip
@@ -31,3 +13,38 @@
 [2026-01-30 20:24:14] [peek-service] INFO: User uploaded archive: archive.zip
 [2026-01-30 20:25:51] [peek-service] INFO: User uploaded archive: archive.zip
 [2026-01-30 20:26:08] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:11:14] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:11:20] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:19:04] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:21:14] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:25:40] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:25:51] [peek-service] INFO: File created: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769833540648_272160\extracted\kde.md
+[2026-01-31 04:25:51] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:26:15] [peek-service] INFO: Folder created: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769833551349_937441\extracted\utils
+[2026-01-31 04:26:15] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:26:23] [peek-service] INFO: File saved: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769833575917_702338\extracted\archive\hello.md
+[2026-01-31 04:28:18] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:28:47] [peek-service] INFO: Deleted: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769833698304_348519\extracted\archive\hello.md
+[2026-01-31 04:28:47] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:33:53] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:34:11] [peek-service] INFO: File created: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769834033998_618354\extracted\archive\new.md
+[2026-01-31 04:34:11] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:35:20] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:35:38] [peek-service] INFO: File created: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769834120314_456009\extracted\archive\new.js
+[2026-01-31 04:35:38] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:36:24] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:36:42] [peek-service] INFO: File created: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769834184769_259647\extracted\archive\new.md
+[2026-01-31 04:36:42] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:38:34] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:38:50] [peek-service] INFO: File created: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769834314625_257471\extracted\archive\new.md
+[2026-01-31 04:38:50] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:43:16] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:43:26] [peek-service] INFO: File created: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769834596158_280647\extracted\archive\new.js
+[2026-01-31 04:43:26] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:54:41] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 04:54:51] [peek-service] INFO: File created: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769835281106_203652\extracted\archive\new.js
+[2026-01-31 04:54:59] [peek-service] INFO: Folder created: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769835281106_203652\extracted\utils
+[2026-01-31 04:55:08] [peek-service] INFO: File created: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769835281106_203652\extracted\utils\readme.md
+[2026-01-31 04:55:35] [peek-service] INFO: File saved: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769835281106_203652\extracted\utils\readme.md
+[2026-01-31 04:56:25] [peek-service] INFO: Deleted: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769835281106_203652\extracted\archive\new.js
+[2026-01-31 04:56:29] [peek-service] INFO: File saved: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769835281106_203652\extracted\archive\hello.md

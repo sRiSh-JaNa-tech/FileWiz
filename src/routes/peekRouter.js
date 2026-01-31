@@ -23,6 +23,38 @@ router.get('/display', (req, res) => {
   res.render('peek/peek', { error: null, title: 'Peek Files' });
 });
 
+router.get('/view', async (req, res) => {
+    const { ws } = req.query;
+    if (!ws) {
+        return res.redirect('/peek/display');
+    }
+
+    const workspaceId = ws;
+    const workspacePath = path.join(rootDir, 'temp', 'workspaces', workspaceId);
+    const extractPath = path.join(workspacePath, 'extracted');
+
+    try {
+        await fs.access(extractPath);
+    } catch (err) {
+        return res.status(404).render('peek/peek', {
+             error: 'Workspace expired or not found',
+             title: 'Peek Files'
+        });
+    }
+
+    try {
+        const tree = await buildTree(extractPath);
+        res.render('peek/result', {
+            tree,
+            workspaceId,
+            title: 'Peek Result'
+        });
+    } catch (err) {
+        console.error('Error building tree:', err);
+        res.status(500).send("Error loading workspace");
+    }
+});
+
 router.post(
   '/result',
   upload.single('archive'),
@@ -95,11 +127,8 @@ router.post(
     );
 
     // Temporary tree (placeholder)
-    res.render('peek/result', {
-      tree,             
-      workspaceId,
-      title: 'Peek Result'
-    });
+    // Redirect to view
+    res.redirect(`/peek/view?ws=${workspaceId}`);
   }
 );
 
@@ -265,6 +294,7 @@ router.get('/download', async (req, res) => {
 
 router.post('/file/create', async (req, res) => {
   const { ws, path: relativePath } = req.body;
+  console.log('CREATE FILE BODY:', req.body);
 
   try {
     const filePath = resolveWorkspacePath(ws, relativePath);
@@ -286,6 +316,8 @@ router.post('/file/create', async (req, res) => {
 router.post('/folder/create', async (req, res) => {
   const { ws, path: relativePath } = req.body;
 
+  console.log('CREATE FOLDER BODY:', req.body);
+
   try {
     const folderPath = resolveWorkspacePath(ws, relativePath);
 
@@ -305,6 +337,8 @@ router.post('/folder/create', async (req, res) => {
 
 router.post('/rename', async (req, res) => {
   const { ws, oldPath, newPath } = req.body;
+
+  console.log('RENAME BODY:', req.body);
 
   try {
     const oldAbs = resolveWorkspacePath(ws, oldPath);
@@ -326,6 +360,8 @@ router.post('/rename', async (req, res) => {
 
 router.post('/delete', async (req, res) => {
   const { ws, path: relativePath } = req.body;
+
+  console.log('DELETE BODY:', req.body);
 
   try {
     const targetPath = resolveWorkspacePath(ws, relativePath);

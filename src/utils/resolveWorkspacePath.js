@@ -2,7 +2,14 @@ const path = require('path');
 const rootDir = require('./pathUtils');
 
 function resolveWorkspacePath(ws, relativePath = '') {
-  if (relativePath.includes('..')) {
+  if (!ws) {
+    throw new Error('Workspace missing');
+  }
+
+  // Normalize path
+  const cleanPath = relativePath.replace(/^\/+/, '');
+
+  if (cleanPath.includes('..')) {
     throw new Error('Invalid path');
   }
 
@@ -12,7 +19,7 @@ function resolveWorkspacePath(ws, relativePath = '') {
     'workspaces',
     ws,
     'extracted',
-    relativePath
+    cleanPath
   );
 }
 

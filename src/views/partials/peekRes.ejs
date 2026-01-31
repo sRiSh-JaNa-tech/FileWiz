@@ -1,137 +1,195 @@
 <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
 
 <script>
-const workspaceId = "<%= workspaceId %>";
-let editor = null;
-let currentFile = null;
+  // ===== GLOBAL STATE =====
+  const workspaceId = "<%= workspaceId %>";
+  let editor = null;
+  let currentFile = null;
 
-require.config({
+  // ===== MONACO SETUP =====
+  require.config({
     paths: {
-    vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs"
+      vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs"
     }
-});
+  });
 
-require(["vs/editor/editor.main"], function () {
+  require(["vs/editor/editor.main"], function () {
     editor = monaco.editor.create(document.getElementById("editor"), {
-    value: "// Select a file from the left panel",
-    language: "plaintext",
-    theme: "vs-dark",
-    automaticLayout: false
+      value: "// Select a file from the left panel",
+      language: "plaintext",
+      theme: "vs-dark",
+      automaticLayout: false
     });
 
-    // 🔑 FORCE correct sizing
-    window.addEventListener("resize", () => {
-    editor.layout();
-    });
-
-    // Initial layout
+    // Force correct layout
+    window.addEventListener("resize", () => editor.layout());
     setTimeout(() => editor.layout(), 0);
-});
+  });
 
-async function openFile(filePath) {
-  currentFile = filePath;
+  // ===== FILE OPEN =====
+  window.openFile = async function (filePath) {
+    currentFile = filePath;
 
-  document.getElementById('current-file').textContent =
-    `Editing: ${filePath}`;
+    document.getElementById("current-file").textContent =
+      `Editing: ${filePath}`;
 
-  const res = await fetch(
-    `/peek/file?ws=${workspaceId}&path=${encodeURIComponent(filePath)}`
-  );
+    const res = await fetch(
+      `/peek/file?ws=${workspaceId}&path=${encodeURIComponent(filePath)}`
+    );
 
-  const data = await res.json();
-  editor.setValue(data.content || '');
+    const data = await res.json();
+    editor.setValue(data.content || "");
 
-  const ext = filePath.split('.').pop();
-  monaco.editor.setModelLanguage(
-    editor.getModel(),
-    ext || 'plaintext'
-  );
+    const ext = filePath.split(".").pop();
+    monaco.editor.setModelLanguage(
+      editor.getModel(),
+      ext || "plaintext"
+    );
 
-  editor.layout();
-}
+    editor.layout();
+  };
 
-async function saveFile() {
+  // ===== SAVE FILE =====
+  window.saveFile = async function () {
     if (!currentFile) {
-    alert('No file selected');
-    return;
+      alert("No file selected");
+      return;
     }
 
-    const res = await fetch('/peek/file/save', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
+    const res = await fetch("/peek/file/save", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
         ws: workspaceId,
         path: currentFile,
         content: editor.getValue()
-    })
+      })
     });
 
     const data = await res.json();
 
     if (data.success) {
-    document.getElementById('current-file').textContent =
+      document.getElementById("current-file").textContent =
         `Saved: ${currentFile}`;
     } else {
-    alert(data.error || 'Save failed');
+      alert(data.error || "Save failed");
     }
-}
+  };
 
-function updateAndDownload() {
-// Just navigate — browser handles download
-window.location.href = `/peek/download?ws=${workspaceId}`;
-}
-async function createFile() {
-const path = prompt('Enter file path (e.g. src/new.js)');
-if (!path) return;
+  // ===== DOWNLOAD ZIP =====
+  window.updateAndDownload = function () {
+    // Trigger download via temporary link
+    const link = document.createElement('a');
+    link.href = `/peek/download?ws=${workspaceId}`;
+    link.download = 'updated.zip';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 
-await fetch('/peek/file/create', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ws: workspaceId, path })
-});
+    // Redirect to peek.ejs (display route) after a short delay
+    setTimeout(() => {
+      window.location.href = '/peek/display';
+    }, 1000);
+  };
 
-location.reload();
-}
+  // ===== CREATE FILE =====
+  window.createFile = async function () {
+    const path = prompt("Enter file path (e.g. src/new.js)");
+    if (!path) {
+      console.log('No path provided for new file.');
+      return;
+    }
+    console.log('Creating file at path:', path);
+    try {
+      const res = await fetch("/peek/file/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ws: workspaceId, path })
+      });
 
-async function createFolder() {
-const path = prompt('Enter folder path (e.g. src/utils)');
-if (!path) return;
+      if (res.ok) {
+        console.log('File created, reloading page.');
+        location.reload();
+      } else {
+        const data = await res.json();
+        alert(data.error || "Failed to create file");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Network error or server unreachable");
+    }
+  };
 
-await fetch('/peek/folder/create', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ws: workspaceId, path })
-});
+  // ===== CREATE FOLDER =====
+  window.createFolder = async function () {
+    const path = prompt("Enter folder path (e.g. src/utils)");
+    if (!path) return;
 
-location.reload();
-}
+    try {
+      const res = await fetch("/peek/folder/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ws: workspaceId, path })
+      });
 
-async function renameItem() {
-const oldPath = prompt('Old path');
-const newPath = prompt('New path');
-if (!oldPath || !newPath) return;
+      if (res.ok) {
+        location.reload();
+      } else {
+        const data = await res.json();
+        alert(data.error || "Failed to create folder");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Network error");
+    }
+  };
 
-await fetch('/peek/rename', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ws: workspaceId, oldPath, newPath })
-});
+  // ===== RENAME =====
+  window.renameItem = async function () {
+    const oldPath = prompt("Old path");
+    const newPath = prompt("New path");
+    if (!oldPath || !newPath) return;
 
-location.reload();
-}
+    try {
+      const res = await fetch("/peek/rename", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ws: workspaceId, oldPath, newPath })
+      });
 
-async function deleteItem() {
-const path = prompt('Path to delete');
-if (!path) return;
+      if (res.ok) {
+        location.reload();
+      } else {
+        const data = await res.json();
+        alert(data.error || "Failed to rename");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Network error");
+    }
+  };
 
-await fetch('/peek/delete', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ws: workspaceId, path })
-});
+  // ===== DELETE =====
+  window.deleteItem = async function () {
+    const path = prompt("Path to delete");
+    if (!path) return;
 
-location.reload();
-}
+    try {
+      const res = await fetch("/peek/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ws: workspaceId, path })
+      });
+
+      if (res.ok) {
+        location.reload();
+      } else {
+        const data = await res.json();
+        alert(data.error || "Failed to delete");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Network error");
+    }
+  };
 </script>

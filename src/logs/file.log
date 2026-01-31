@@ -1,9 +1,3 @@
-[2026-01-30 19:18:35] [peek-service] INFO: User uploaded archive: archive.zip
-[2026-01-30 19:18:35] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769800715430-367551844.zip
-[2026-01-30 19:20:30] [peek-service] INFO: User uploaded archive: archive.zip
-[2026-01-30 19:20:30] [python_exec] INFO: Python processed zip successfully: C:\Users\srish\Desktop\FileWiz\src\temp\uploads\1769800830512-706313388.zip
-[2026-01-30 19:27:03] [peek-service] INFO: User uploaded archive: archive.zip
-[2026-01-30 19:27:34] [peek-service] INFO: User uploaded archive: archive.zip
 [2026-01-30 19:32:56] [peek-service] INFO: User uploaded archive: archive.zip
 [2026-01-30 20:07:40] [peek-service] INFO: User uploaded archive: archive.zip
 [2026-01-30 20:08:18] [peek-service] INFO: User uploaded archive: archive.zip
@@ -48,3 +42,9 @@
 [2026-01-31 04:55:35] [peek-service] INFO: File saved: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769835281106_203652\extracted\utils\readme.md
 [2026-01-31 04:56:25] [peek-service] INFO: Deleted: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769835281106_203652\extracted\archive\new.js
 [2026-01-31 04:56:29] [peek-service] INFO: File saved: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769835281106_203652\extracted\archive\hello.md
+[2026-01-31 08:47:36] [peek-service] INFO: User uploaded archive: archive.zip
+[2026-01-31 08:51:47] [peek-service] INFO: Folder created: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769849256066_396015\extracted\archive\utils
+[2026-01-31 08:52:09] [peek-service] INFO: File created: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769849256066_396015\extracted\archive\utils\new.md
+[2026-01-31 08:52:24] [peek-service] INFO: File saved: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769849256066_396015\extracted\archive\utils\new.md
+[2026-01-31 08:54:34] [peek-service] INFO: User uploaded archive: archive1.zip
+[2026-01-31 08:55:11] [peek-service] INFO: File saved: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1769849674064_577155\extracted\insurance.csv

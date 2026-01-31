@@ -1,7 +1,17 @@
 <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
 
 <script>
-  // ===== GLOBAL STATE =====
+  const EDITABLE_EXTENSIONS = [
+    'js', 'json', 'txt', 'md',
+    'html', 'css', 'ts', 'csv'
+  ];
+
+
+  function isEditable(filePath) {
+    const ext = filePath.split('.').pop().toLowerCase();
+    return EDITABLE_EXTENSIONS.includes(ext);
+  }
+
   const workspaceId = "<%= workspaceId %>";
   let editor = null;
   let currentFile = null;
@@ -27,8 +37,17 @@
   });
 
   // ===== FILE OPEN =====
-  window.openFile = async function (filePath) {
+  let activeFileEl = null;
+  window.openFile = async function (filePath, element) {
     currentFile = filePath;
+
+    if (activeFileEl) {
+      activeFileEl.classList.remove('bg-blue-100');
+    }
+    if (element) {
+      element.classList.add('bg-blue-100');
+      activeFileEl = element;
+    }
 
     document.getElementById("current-file").textContent =
       `Editing: ${filePath}`;
@@ -46,6 +65,16 @@
       ext || "plaintext"
     );
 
+    const editable = isEditable(filePath);
+    editor.updateOptions({ readOnly: !editable });
+
+    // 🔑 Toggle Save button
+    document.getElementById('save-btn').disabled = !editable;
+
+    // UI feedback
+    if (!editable) {
+      document.getElementById('current-file').textContent += ' (read-only)';
+    }
     editor.layout();
   };
 
@@ -53,6 +82,11 @@
   window.saveFile = async function () {
     if (!currentFile) {
       alert("No file selected");
+      return;
+    }
+
+    if (!isEditable(currentFile)) {
+      alert('This file is read-only');
       return;
     }
 
@@ -91,6 +125,28 @@
       window.location.href = '/peek/display';
     }, 1000);
   };
+
+  window.refreshTree = async function () {
+    const res = await fetch(`/peek/tree?ws=${workspaceId}`);
+    const tree = await res.json();
+
+    const container = document.getElementById('file-tree');
+    container.innerHTML = renderTreeHTML(tree);
+  };
+
+  window.oncontextmenu = function (e) {
+    const fileEl = e.target.closest('.file');
+    if (!fileEl) return;
+
+    e.preventDefault();
+    const path = fileEl.dataset.path;
+
+    const action = prompt(`Action for ${path}\n1: Rename\n2: Delete`);
+
+    if (action === '1') renameItem(path);
+    if (action === '2') deleteItem(path);
+  };
+
 
   // ===== CREATE FILE =====
   window.createFile = async function () {
@@ -145,10 +201,12 @@
   };
 
   // ===== RENAME =====
-  window.renameItem = async function () {
-    const oldPath = prompt("Old path");
-    const newPath = prompt("New path");
-    if (!oldPath || !newPath) return;
+  window.renameItem = async function (targetPath) {
+    const oldPath = targetPath || currentFile || prompt("Old path");
+    if (!oldPath) return;
+
+    const newPath = prompt("New path", oldPath);
+    if (!newPath || newPath === oldPath) return;
 
     try {
       const res = await fetch("/peek/rename", {
@@ -170,9 +228,11 @@
   };
 
   // ===== DELETE =====
-  window.deleteItem = async function () {
-    const path = prompt("Path to delete");
+  window.deleteItem = async function (targetPath) {
+    const path = targetPath || currentFile || prompt("Path to delete");
     if (!path) return;
+
+    if (!confirm(`Are you sure you want to delete ${path}?`)) return;
 
     try {
       const res = await fetch("/peek/delete", {
@@ -192,4 +252,13 @@
       alert("Network error");
     }
   };
+
+  window.toggleFolder = function (el) {
+    const children = el.nextElementSibling;
+    const arrow = el.querySelector('.arrow');
+
+    children.classList.toggle('hidden');
+    arrow.textContent = children.classList.contains('hidden') ? '▶' : '▼';
+  };
+
 </script>

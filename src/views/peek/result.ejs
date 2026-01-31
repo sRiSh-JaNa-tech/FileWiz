@@ -38,17 +38,23 @@
       <% nodes.forEach(node => { %>
 
         <% if (node.type === 'folder') { %>
-          <div class="font-medium text-blue-600 mt-1">
+          <div
+            class="folder flex items-center cursor-pointer font-medium text-blue-600 mt-1"
+            onclick="toggleFolder(this)"
+          >
+            <span class="mr-1 arrow">▶</span>
             📁 <%= node.name %>
           </div>
-          <div class="ml-4">
+
+          <div class="ml-4 hidden folder-children">
             <%- renderTree(node.children, prefix + node.name + '/') %>
           </div>
 
         <% } else { %>
           <div
-            class="cursor-pointer text-sm text-gray-700 hover:bg-gray-200 rounded px-2 py-1 ml-2"
-            onclick="openFile('<%= prefix + node.name %>')"
+            class="file cursor-pointer text-sm text-gray-700 hover:bg-gray-200 rounded px-2 py-1 ml-2"
+            data-path="<%= prefix + node.name %>"
+            onclick="openFile('<%= prefix + node.name %>', this)"
           >
             📄 <%= node.name %>
           </div>
@@ -79,8 +85,9 @@
 
       <div class="space-x-2">
         <button
+          id="save-btn"
           onclick="saveFile()"
-          class="bg-blue-600 text-white px-4 py-1.5 rounded hover:bg-blue-700 text-sm"
+          class="bg-blue-600 text-white px-4 py-1.5 rounded hover:bg-blue-700 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Save
         </button>

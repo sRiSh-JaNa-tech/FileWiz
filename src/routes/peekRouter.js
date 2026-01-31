@@ -15,7 +15,7 @@ const resolveWorkspacePath = require('../utils/resolveWorkspacePath');
 
 const EDITABLE_EXTENSIONS = [
   '.js', '.json', '.txt', '.md',
-  '.html', '.css', '.ts'
+  '.html', '.css', '.ts', '.csv'
 ];
 
 
@@ -24,35 +24,35 @@ router.get('/display', (req, res) => {
 });
 
 router.get('/view', async (req, res) => {
-    const { ws } = req.query;
-    if (!ws) {
-        return res.redirect('/peek/display');
-    }
+  const { ws } = req.query;
+  if (!ws) {
+    return res.redirect('/peek/display');
+  }
 
-    const workspaceId = ws;
-    const workspacePath = path.join(rootDir, 'temp', 'workspaces', workspaceId);
-    const extractPath = path.join(workspacePath, 'extracted');
+  const workspaceId = ws;
+  const workspacePath = path.join(rootDir, 'temp', 'workspaces', workspaceId);
+  const extractPath = path.join(workspacePath, 'extracted');
 
-    try {
-        await fs.access(extractPath);
-    } catch (err) {
-        return res.status(404).render('peek/peek', {
-             error: 'Workspace expired or not found',
-             title: 'Peek Files'
-        });
-    }
+  try {
+    await fs.access(extractPath);
+  } catch (err) {
+    return res.status(404).render('peek/peek', {
+      error: 'Workspace expired or not found',
+      title: 'Peek Files'
+    });
+  }
 
-    try {
-        const tree = await buildTree(extractPath);
-        res.render('peek/result', {
-            tree,
-            workspaceId,
-            title: 'Peek Result'
-        });
-    } catch (err) {
-        console.error('Error building tree:', err);
-        res.status(500).send("Error loading workspace");
-    }
+  try {
+    const tree = await buildTree(extractPath);
+    res.render('peek/result', {
+      tree,
+      workspaceId,
+      title: 'Peek Result'
+    });
+  } catch (err) {
+    console.error('Error building tree:', err);
+    res.status(500).send("Error loading workspace");
+  }
 });
 
 router.post(
@@ -115,10 +115,15 @@ router.post(
     const tree = await buildTree(extractPath); // Create Tree
 
     // Metadata
+    const WORKSPACE_TTL_MINUTES = 30;
+
     const meta = {
       workspaceId,
       originalZip: req.file.originalname,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      expiresAt: new Date(
+        Date.now() + WORKSPACE_TTL_MINUTES * 60 * 1000
+      ).toISOString()
     };
 
     await fs.writeFile(
@@ -185,6 +190,19 @@ router.get('/file', async (req, res) => {
     res.status(500).json({ error: 'Failed to read file' });
   }
 });
+
+router.get('/tree', async (req, res) => {
+  const { ws } = req.query;
+
+  try {
+    const extractPath = resolveWorkspacePath(ws);
+    const tree = await buildTree(extractPath);
+    res.json(tree);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 
 router.post('/file/save', async (req, res) => {
   const { ws, path: relativePath, content } = req.body;

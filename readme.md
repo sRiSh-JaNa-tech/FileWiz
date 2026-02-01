@@ -34,11 +34,6 @@ Current Features :
 
 
 ------------  More features Coming -----------------------------
-.
-.
-.
-.
-.
 
 
 

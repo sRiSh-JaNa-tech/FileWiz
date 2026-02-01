@@ -114,6 +114,13 @@ router.post(
 
     const tree = await buildTree(extractPath); // Create Tree
 
+    // Cleanup uploaded zip immediately after extraction
+    try {
+      await fs.rm(req.file.path, { force: true });
+    } catch (cleanupErr) {
+      console.error("Failed to delete uploaded zip:", cleanupErr);
+    }
+
     // Metadata
     const WORKSPACE_TTL_MINUTES = 30;
 

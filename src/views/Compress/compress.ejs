@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title><%= title %></title>
+  <title>
+    <%= title %>
+  </title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="/output.css" rel="stylesheet">
 </head>
@@ -31,84 +34,141 @@
         <div class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-lg text-center">
           <%= error %>
         </div>
-      <% } %>
+        <% } %>
 
-      <!-- Success Message -->
-      <% if (downloadLink) { %>
-        <div class="mt-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg text-center">
-          <p class="font-medium mb-2">Compression successful 🎉</p>
-          <a href="<%= downloadLink %>" class="text-blue-600 underline font-semibold">
-            Download ZIP
-          </a>
-        </div>
-      <% } %>
 
-      <!-- Upload Form -->
-      <form
-        action="/compress/result"
-        method="POST"
-        enctype="multipart/form-data"
-        class="mt-8"
-      >
 
-        <!-- Drag & Drop Area -->
-        <label
-          for="files"
-          id="drop-zone"
-          class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition"
-        >
-          <div class="text-center">
-            <p class="text-gray-700 font-medium">
-              Drag & drop your files here
-            </p>
-            <p class="text-sm text-gray-500 mt-1">
-              or click to browse (multiple files supported)
-            </p>
-          </div>
+          <!-- Success Section (Stats + Progress + Download) -->
+          <% if (downloadLink) { %>
+            <div id="success-container" class="mt-6">
 
-          <input
-            id="files"
-            name="files"
-            type="file"
-            class="hidden"
-            multiple
-            required
-          />
-        </label>
+              <!-- Statistics Card -->
+              <% if (stats) { %>
+                <div class="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h3 class="text-blue-800 font-semibold mb-2 text-center">Compression Results</h3>
+                  <div class="grid grid-cols-3 gap-2 text-center text-sm">
+                    <div>
+                      <p class="text-gray-500">Original</p>
+                      <p class="font-bold text-gray-800">
+                        <%= stats.before %>
+                      </p>
+                    </div>
+                    <div>
+                      <p class="text-gray-500">Compressed</p>
+                      <p class="font-bold text-green-600">
+                        <%= stats.after %>
+                      </p>
+                    </div>
+                    <div>
+                      <p class="text-gray-500">Reduction</p>
+                      <p class="font-bold text-blue-600">
+                        <%= stats.reduction %>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <% } %>
 
-        <!-- Selected File Names -->
-        <p id="file-name" class="mt-3 text-center text-sm text-gray-600 hidden">
-          Selected files:
-          <span class="font-medium"></span>
-        </p>
+                  <!-- Progress Bar -->
+                  <div id="progress-wrapper"
+                    class="w-full bg-gray-200 rounded-full h-4 mb-4 overflow-hidden shadow-inner">
+                    <div id="progress-bar" class="bg-blue-600 h-4 rounded-full relative"
+                      style="width: 0%; transition: width 0.1s linear;">
+                      <div class="absolute inset-0 bg-white opacity-20 animate-pulse"></div>
+                    </div>
+                  </div>
+                  <p id="progress-text" class="text-center text-blue-700 font-medium animate-pulse mb-2">Finalizing
+                    PDF...</p>
 
-        <!-- Compression Level -->
-        <div class="mt-6">
-        <label for="compressionLevel" class="block text-sm font-medium text-gray-700 mb-2">
-            Compression Level
-        </label>
+                  <!-- Download Button (Initially Hidden) -->
+                  <div id="download-wrapper" class="hidden">
+                    <div
+                      class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-center">
+                      <p class="font-medium mb-2">Compression successful 🎉</p>
+                      <a href="<%= downloadLink %>"
+                        onclick="setTimeout(() => { window.location.href = '/compress/pdf'; }, 1000);"
+                        class="block w-full text-center bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700 transition shadow-md">
+                        Download PDF
+                      </a>
+                    </div>
+                    <a href="/compress/pdf" class="block text-center text-sm text-gray-500 hover:text-gray-700 mt-2">
+                      Compress another file
+                    </a>
+                  </div>
 
-        <select
-            id="compressionLevel"
-            name="compressionLevel"
-            required
-            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-            <option value="normal" selected>Normal Compression</option>
-            <option value="low">Less Compression (Faster)</option>
-            <option value="extreme">Extreme Compression (Smaller Size)</option>
-        </select>
-        </div>
+                  <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                      const progressBar = document.getElementById('progress-bar');
+                      const progressWrapper = document.getElementById('progress-wrapper');
+                      const progressText = document.getElementById('progress-text');
+                      const downloadWrapper = document.getElementById('download-wrapper');
 
-        <!-- Submit -->
-        <button
-          type="submit"
-          class="mt-6 w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
-        >
-          Compress Files
-        </button>
+                      let width = 0;
+                      const interval = setInterval(() => {
+                        if (width >= 100) {
+                          clearInterval(interval);
+                          // Animation complete
+                          setTimeout(() => {
+                            progressWrapper.classList.add('hidden');
+                            progressText.classList.add('hidden');
+                            downloadWrapper.classList.remove('hidden');
+                          }, 500);
+                        } else {
+                          width++;
+                          progressBar.style.width = width + '%';
+                        }
+                      }, 15); // 15ms * 100 = 1.5 seconds total
+                    });
+                  </script>
+            </div>
+            <% } else { %>
 
-      </form>
+              <!-- Upload Form -->
+              <form action="/compress/pdf/result" method="POST" enctype="multipart/form-data" class="mt-8">
+
+                <!-- Drag & Drop Area -->
+                <label for="files" id="drop-zone"
+                  class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
+                  <div class="text-center">
+                    <p class="text-gray-700 font-medium">
+                      Drag & drop your files here
+                    </p>
+                    <p class="text-sm text-gray-500 mt-1">
+                      or click to browse (multiple files supported)
+                    </p>
+                  </div>
+
+                  <input id="files" name="files" type="file" class="hidden" multiple required />
+                </label>
+
+                <!-- Selected File Names -->
+                <p id="file-name" class="mt-3 text-center text-sm text-gray-600 hidden">
+                  Selected files:
+                  <span class="font-medium"></span>
+                </p>
+
+                <!-- Compression Level -->
+                <div class="mt-6">
+                  <label for="compressionLevel" class="block text-sm font-medium text-gray-700 mb-2">
+                    Compression Level
+                  </label>
+
+                  <select id="compressionLevel" name="compressionLevel" required
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="normal" selected>Normal Compression</option>
+                    <option value="low">Less Compression (Faster)</option>
+                    <option value="extreme">Extreme Compression (Smaller Size)</option>
+                  </select>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit"
+                  class="mt-6 w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
+                  Compress Files
+                </button>
+
+              </form>
+              <% } %>
 
     </div>
   </main>
@@ -152,4 +212,5 @@
   </script>
 
 </body>
+
 </html>

@@ -43,12 +43,46 @@ async function cleanupWorkspaces() {
         );
       }
     }
+    // Existing workspace cleanup logic...
   } catch (err) {
     await logger.log(
       `Workspace cleanup failed: ${err.message}`,
       'ERROR',
       'cleanup-service'
     );
+  }
+
+  // --- CLEANUP TEMP UPLOADS & OUTPUTS ---
+  const FOLDS_TO_CLEAN = [
+    path.join(rootDir, 'temp', 'uploads'),
+    path.join(rootDir, 'temp', 'outputs')
+  ];
+
+  for (const folder of FOLDS_TO_CLEAN) {
+    try {
+      // Ensure folder exists
+      try { await fs.access(folder); } catch { continue; }
+
+      const files = await fs.readdir(folder);
+      const NOW = Date.now();
+      const ONE_HOUR = 60 * 60 * 1000;
+
+      for (const file of files) {
+        const filePath = path.join(folder, file);
+        try {
+          const stats = await fs.stat(filePath);
+          if (NOW - stats.mtimeMs > ONE_HOUR) {
+            await fs.rm(filePath, { force: true });
+            console.log(`Cleaned up old file: ${filePath}`);
+          }
+        } catch (e) {
+          // Ignore errors for individual files
+        }
+      }
+
+    } catch (err) {
+      console.error(`Error cleaning directory ${folder}:`, err);
+    }
   }
 }
 

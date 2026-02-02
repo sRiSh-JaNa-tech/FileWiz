@@ -31,12 +31,9 @@ Current Features :
 1. PEEK .zip files and edit or create files in it without openning it. 
 2. PDF Compressor provides Lossless compression of PDF.
 3. PPT Compressor provides user with various options of compressing the ppt (Less, Normal, Extreme) and also gives user ability to remove all pictures form the files.
+
+
 ------------  More features Coming -----------------------------
-.
-.
-.
-.
-.
 
 
 

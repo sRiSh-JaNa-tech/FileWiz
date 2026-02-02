@@ -9,6 +9,10 @@ cleanupWorkspaces(); // Initial cleanup on startup
 
 
 const app = express();
+app.use(
+  '/temp',
+  express.static(path.join(rootDir, 'temp'))
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(rootDir, 'public')));

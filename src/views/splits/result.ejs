@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Split Result</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/output.css" rel="stylesheet">
+</head>
+
+<body class="min-h-screen bg-gray-50 flex flex-col">
+
+  <header>
+    <%- include('../partials/nav') %>
+  </header>
+
+  <main class="flex-1 px-6 py-10 max-w-6xl mx-auto">
+
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-bold text-gray-800">
+        Results: <%= splitFiles.length %> Files Created
+      </h2>
+      <a href="/split/pdf" class="text-blue-600 hover:text-blue-800 font-medium transition flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Start Over
+      </a>
+    </div>
+
+    <form action="/split/pdf/download" method="POST" id="downloadForm">
+
+      <!-- Toolbar -->
+      <div class="flex gap-3 mb-6">
+        <button type="button" id="selectAll"
+          class="text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded transition">
+          Select All
+        </button>
+        <button type="button" id="deselectAll"
+          class="text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded transition">
+          Deselect All
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <% splitFiles.forEach((file, index)=> { %>
+          <div class="bg-white shadow-md rounded-lg p-4 transition hover:shadow-lg border border-gray-100">
+            <iframe src="<%= file.previewUrl %>" class="w-full h-48 border rounded bg-gray-50"
+              title="Preview Part <%= index + 1 %>"></iframe>
+
+            <label class="flex items-center gap-2 mt-4 cursor-pointer select-none">
+              <input type="checkbox" name="selectedFiles" value="<%= file.path %>"
+                class="w-5 h-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500 file-checkbox" checked />
+              <span class="font-medium text-gray-700">
+                Part <%= index + 1 %>
+              </span>
+            </label>
+          </div>
+          <% }) %>
+      </div>
+
+      <div class="mt-10 flex justify-center">
+        <button type="submit"
+          class="bg-blue-600 text-white px-8 py-3 rounded-lg font-bold text-lg shadow-lg hover:bg-blue-700 transform hover:-translate-y-0.5 transition flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          Download Selected as ZIP
+        </button>
+      </div>
+
+    </form>
+
+    <script>
+      // 1. Select/Deselect All Logic
+      const selectAllBtn = document.getElementById('selectAll');
+      const deselectAllBtn = document.getElementById('deselectAll');
+      const checkboxes = document.querySelectorAll('.file-checkbox');
+
+      selectAllBtn.addEventListener('click', () => {
+        checkboxes.forEach(cb => cb.checked = true);
+      });
+
+      deselectAllBtn.addEventListener('click', () => {
+        checkboxes.forEach(cb => cb.checked = false);
+      });
+
+      // 2. Auto-Refresh Logic
+      const form = document.getElementById('downloadForm');
+      form.addEventListener('submit', () => {
+        // Wait 1.5s for download to start, then redirect to start over
+        setTimeout(() => {
+          window.location.href = '/split/pdf';
+        }, 1500);
+      });
+    </script>
+
+  </main>
+
+</body>
+
+</html>

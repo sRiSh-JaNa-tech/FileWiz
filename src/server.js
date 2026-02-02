@@ -7,6 +7,7 @@ const rootDir = require('./utils/pathUtils');
 const peekRouter = require('./routes/peekRouter');
 const compressRouter = require('./routes/compressRouter');
 const compressPPTRouter = require('./routes/compressPPTRouter');
+const splitRouter = require('./routes/splitRouter');
 const loginRouter = require('./routes/loginRouter');
 const isAuthenticated = require('./middlewares/auth.middleware');
 const usageLimit = require('./middlewares/usageLimit.middleware');
@@ -28,6 +29,10 @@ app.use('/peek', peekRouter); // <- isAuthenticated, add this after
 app.use("/compress/pdf", compressRouter); // <- isAuthenticated, usageLimit, add this after
 
 app.use("/compress/ppt",compressPPTRouter);
+
+app.use("/split/pdf",splitRouter);
+
+
 
 const server = http.createServer(app);
 server.listen(PORT, () => {

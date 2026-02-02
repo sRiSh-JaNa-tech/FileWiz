@@ -52,10 +52,11 @@ async function cleanupWorkspaces() {
     );
   }
 
-  // --- CLEANUP TEMP UPLOADS & OUTPUTS ---
+  // --- CLEANUP TEMP UPLOADS & OUTPUTS & SPLITS ---
   const FOLDS_TO_CLEAN = [
     path.join(rootDir, 'temp', 'uploads'),
-    path.join(rootDir, 'temp', 'outputs')
+    path.join(rootDir, 'temp', 'outputs'),
+    path.join(rootDir, 'temp', 'splits')
   ];
 
   for (const folder of FOLDS_TO_CLEAN) {
@@ -72,8 +73,8 @@ async function cleanupWorkspaces() {
         try {
           const stats = await fs.stat(filePath);
           if (NOW - stats.mtimeMs > ONE_HOUR) {
-            await fs.rm(filePath, { force: true });
-            console.log(`Cleaned up old file: ${filePath}`);
+            await fs.rm(filePath, { recursive: true, force: true });
+            console.log(`Cleaned up old file/folder: ${filePath}`);
           }
         } catch (e) {
           // Ignore errors for individual files

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>
+    <%= title || 'Secure PDF' %>
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/output.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.5);
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: radial-gradient(circle at top right, #eff6ff, #f8fafc);
+      overflow-x: hidden;
+    }
+
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.04);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #60a5fa);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .input-field {
+      @apply w-full px-4 py-3 rounded-xl border border-slate-200 bg-white/50 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all duration-200 outline-none;
+    }
+
+    /* Custom Input Styles override */
+    input.input-field {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 0.75rem;
+      border: 1px solid #e2e8f0;
+      background-color: rgba(255, 255, 255, 0.5);
+      transition: all 0.2s;
+    }
+
+    input.input-field:focus {
+      background-color: white;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+      outline: none;
+    }
+
+    select.input-field {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 0.75rem;
+      border: 1px solid #e2e8f0;
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .drop-zone-active {
+      @apply bg-blue-50/50 border-blue-400 ring-4 ring-blue-500/10;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <header class="sticky top-0 z-50">
+    <%- include('../partials/nav') %>
+  </header>
+
+  <main class="flex-1 max-w-7xl mx-auto px-6 py-12 w-full flex flex-col items-center">
+
+    <!-- Header Section -->
+    <div class="text-center mb-10 w-full max-w-2xl">
+      <nav class="flex justify-center mb-4" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 text-xs text-slate-400 font-bold uppercase tracking-widest">
+          <li class="inline-flex items-center">
+            <span class="hover:text-slate-600">Security Suite</span>
+          </li>
+          <li>
+            <div class="flex items-center">
+              <svg class="w-2 h-2 mx-2" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="m1 9 4-4-4-4" />
+              </svg>
+              <span class="text-blue-500">PDF Encryption</span>
+            </div>
+          </li>
+        </ol>
+      </nav>
+      <h1 class="text-4xl md:text-5xl font-black gradient-text tracking-tight mb-4">
+        Shield Your Content
+      </h1>
+      <p class="text-slate-500 text-base md:text-lg max-w-lg mx-auto leading-relaxed">
+        Apply industry-standard AES encryption to your documents. files are processed locally and never stored.
+      </p>
+    </div>
+
+    <div class="w-full max-w-2xl relative">
+      <!-- Decorative Element -->
+      <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-100 rounded-full blur-3xl opacity-60"></div>
+      <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-indigo-100 rounded-full blur-3xl opacity-60"></div>
+
+      <div class="glass-card rounded-3xl p-8 md:p-10 relative z-10 border border-white/60">
+
+        <!-- Error Message -->
+        <% if (error) { %>
+          <div
+            class="mb-8 flex items-center gap-3 bg-rose-50 border border-rose-100 p-4 rounded-2xl text-rose-600 animate-in fade-in slide-in-from-top-4 duration-300">
+            <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                clip-rule="evenodd"></path>
+            </svg>
+            <p class="text-sm font-semibold">
+              <%= error %>
+            </p>
+          </div>
+          <% } %>
+
+            <form action="/encrypt/upload" method="POST" enctype="multipart/form-data" class="space-y-8">
+
+              <!-- File Upload Zone -->
+              <div class="space-y-3">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Step 1: Upload Document</h3>
+                <label for="pdf" id="drop-zone"
+                  class="group relative flex flex-col items-center justify-center w-full h-44 border-2 border-dashed border-slate-200 rounded-2xl cursor-pointer bg-slate-50/50 hover:bg-white hover:border-blue-400 transition-all duration-300">
+                  <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <div
+                      class="w-14 h-14 bg-white rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                      <svg class="w-7 h-7 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
+                        </path>
+                      </svg>
+                    </div>
+                    <p class="text-sm font-bold text-slate-700 tracking-tight">Drop your PDF here</p>
+                    <p class="text-[11px] text-slate-400 mt-1 uppercase font-bold tracking-wider">or click to browse
+                      local files</p>
+                  </div>
+                  <input id="pdf" name="pdf" type="file" class="hidden" accept=".pdf" required />
+                </label>
+
+                <div id="file-name"
+                  class="flex items-center gap-2 bg-blue-50 px-4 py-2.5 rounded-xl border border-blue-100 hidden animate-in zoom-in duration-300">
+                  <svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                      d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
+                      clip-rule="evenodd"></path>
+                  </svg>
+                  <span class="text-xs font-bold text-blue-700 truncate"></span>
+                </div>
+              </div>
+
+              <!-- Configuration Zone -->
+              <div class="space-y-6">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Step 2: Security Policy</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="space-y-2">
+                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">User
+                      Password</label>
+                    <input type="password" name="user_password" required class="input-field"
+                      placeholder="Digits only (e.g. 1234)" />
+                    <p class="text-[10px] text-slate-400 px-1 italic">Numeric PIN to open the document</p>
+                  </div>
+
+                  <div class="space-y-2">
+                    <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Owner
+                      Password</label>
+                    <input type="password" name="owner_password" required class="input-field"
+                      placeholder="Digits only (e.g. 5678)" />
+                    <p class="text-[10px] text-slate-400 px-1 italic">Numeric PIN for admin access</p>
+                  </div>
+                </div>
+
+                <div class="space-y-2">
+                  <label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Encryption
+                    Strength</label>
+                  <select name="encryption_level" class="input-field appearance-none cursor-pointer">
+                    <option value="low">Low (Legacy Compatibility)</option>
+                    <option value="medium" selected>Medium (Standard 128-bit)</option>
+                    <option value="high">High (Maximum 256-bit Security)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="pt-4">
+                <button type="submit"
+                  class="btn-primary w-full text-white py-4 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl flex items-center justify-center gap-3 transition-all duration-300">
+                  <span>Initialize Encryption</span>
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                    </path>
+                  </svg>
+                </button>
+                <p
+                  class="mt-4 text-[10px] text-center text-slate-400 font-medium bg-slate-50 py-2 rounded-lg border border-slate-100">
+                  <span class="inline-block w-1.5 h-1.5 bg-green-400 rounded-full mr-1.5 mb-0.5 animate-pulse"></span>
+                  Secure end-to-end processing active
+                </p>
+              </div>
+            </form>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const input = document.getElementById('pdf');
+    const dropZone = document.getElementById('drop-zone');
+    const fileName = document.getElementById('file-name');
+    const fileText = fileName.querySelector('span');
+
+    function updateFileLabel(files) {
+      if (files && files.length) {
+        fileText.textContent = files[0].name;
+        fileName.classList.remove('hidden');
+        dropZone.classList.add('border-blue-300', 'bg-blue-50/30');
+      }
+    }
+
+    input.addEventListener('change', () => updateFileLabel(input.files));
+
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('bg-blue-50/50', 'border-blue-400', 'ring-4', 'ring-blue-500/10');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('bg-blue-50/50', 'border-blue-400', 'ring-4', 'ring-blue-500/10');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('bg-blue-50/50', 'border-blue-400', 'ring-4', 'ring-blue-500/10');
+      if (e.dataTransfer.files.length) {
+        input.files = e.dataTransfer.files;
+        updateFileLabel(e.dataTransfer.files);
+      }
+    });
+
+    // Success & Auto-Download handling
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const success = params.get('success');
+      const file = params.get('file');
+
+      if (success === 'true' && file) {
+        // 1. Trigger the download
+        const downloadUrl = `/encrypt/download?fileName=${file}`;
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = `protected-${file}`; // Suggest a filename
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // 2. Clean URL and Refresh page to reset form state
+        // Use setTimeout to ensure the download request is sent before the redirect
+        setTimeout(() => {
+          window.location.href = '/encrypt';
+        }, 1500);
+      }
+    });
+  </script>
+
+</body>
+
+</html>

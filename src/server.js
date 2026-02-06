@@ -9,6 +9,7 @@ const peekRouter = require('./routes/peekRouter');
 const compressRouter = require('./routes/compressRouter');
 const compressPPTRouter = require('./routes/compressPPTRouter');
 const splitRouter = require('./routes/splitRouter');
+const encryptRouter = require('./routes/encryptionRouter');
 const loginRouter = require('./routes/loginRouter');
 const isAuthenticated = require('./middlewares/auth.middleware');
 const usageLimit = require('./middlewares/usageLimit.middleware');
@@ -34,6 +35,8 @@ app.use("/compress/ppt",compressPPTRouter);
 app.use("/split/pdf",splitRouter);
 
 app.use('/redaction', redactionRouter);
+
+app.use("/encrypt",encryptRouter);
 
 const server = http.createServer(app);
 server.listen(PORT, () => {

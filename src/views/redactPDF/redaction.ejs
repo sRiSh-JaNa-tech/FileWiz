@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= title || 'Redact PDF' %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/output.css" rel="stylesheet">
+</head>
+
+<body class="min-h-screen bg-gray-50 flex flex-col">
+
+  <!-- Navbar -->
+  <header>
+    <%- include('../partials/nav') %>
+  </header>
+
+  <!-- Redaction Upload Section -->
+  <main class="flex-1 flex items-center justify-center px-4">
+    <div class="w-full max-w-xl bg-white rounded-xl shadow-lg p-8">
+
+      <!-- Heading -->
+      <h2 class="text-3xl font-bold text-center text-gray-800">
+        Redact PDF
+      </h2>
+      <p class="text-center text-gray-600 mt-2">
+        Upload a PDF to securely remove sensitive information
+      </p>
+
+      <!-- Error Message -->
+      <% if (error) { %>
+        <div class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-lg text-center">
+          <%= error %>
+        </div>
+      <% } %>
+
+      <!-- Upload Form -->
+      <form
+        action="/redaction/upload"
+        method="POST"
+        enctype="multipart/form-data"
+        class="mt-8"
+      >
+
+        <!-- Drag & Drop Area -->
+        <label
+          for="pdf"
+          id="drop-zone"
+          class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition"
+        >
+          <div class="text-center">
+            <p class="text-gray-700 font-medium">
+              Drag & drop your PDF here
+            </p>
+            <p class="text-sm text-gray-500 mt-1">
+              or click to browse (.pdf only)
+            </p>
+          </div>
+
+          <input
+            id="pdf"
+            name="pdf"
+            type="file"
+            class="hidden"
+            accept=".pdf"
+            required
+          />
+        </label>
+
+        <!-- Selected File Name -->
+        <p id="file-name" class="mt-3 text-center text-sm text-gray-600 hidden">
+          Selected file: <span class="font-medium"></span>
+        </p>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="mt-6 w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
+        >
+          Continue to Redaction
+        </button>
+
+        <!-- Info -->
+        <p class="mt-3 text-xs text-center text-gray-500">
+          Your file is processed locally and removed after completion
+        </p>
+
+      </form>
+
+    </div>
+  </main>
+
+  <!-- Drag & Drop Script -->
+  <script>
+    const input = document.getElementById('pdf');
+    const dropZone = document.getElementById('drop-zone');
+    const fileName = document.getElementById('file-name');
+    const fileText = fileName.querySelector('span');
+
+    input.addEventListener('change', () => {
+      if (input.files.length) {
+        fileText.textContent = input.files[0].name;
+        fileName.classList.remove('hidden');
+      }
+    });
+
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('bg-blue-50', 'border-blue-400');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('bg-blue-50', 'border-blue-400');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('bg-blue-50', 'border-blue-400');
+
+      if (e.dataTransfer.files.length) {
+        input.files = e.dataTransfer.files;
+        fileText.textContent = e.dataTransfer.files[0].name;
+        fileName.classList.remove('hidden');
+      }
+    });
+  </script>
+
+</body>
+</html>

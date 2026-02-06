@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= title %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/output.css" rel="stylesheet">
+</head>
+
+<body class="min-h-screen bg-gray-50 flex flex-col">
+
+  <header>
+    <%- include('../partials/nav') %>
+  </header>
+
+  <main class="flex-1 max-w-3xl mx-auto px-4 py-10">
+
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">
+      Confirm Redaction
+    </h2>
+
+    <div class="bg-white shadow rounded-lg p-6 space-y-4">
+      <p class="text-sm text-gray-700">
+        You are about to permanently redact the following:
+      </p>
+
+      <ul class="list-disc list-inside text-sm text-gray-600">
+        <% keywordList.forEach(k => { %>
+          <li>Keyword: <strong><%= k %></strong></li>
+        <% }) %>
+
+        <% if (regexPattern) { %>
+          <li>Regex: <strong><%= regexPattern %></strong></li>
+        <% } %>
+      </ul>
+
+      <form action="/redaction/execute" method="POST">
+        <input type="hidden" name="filename" value="<%= filename %>">
+        <input type="hidden" name="keywords" value="<%= keywordList.join(',') %>">
+        <input type="hidden" name="regex" value="<%= regexPattern %>">
+
+        <div class="flex justify-end gap-3 mt-6">
+          <a
+            href="/redaction/preview/<%= filename %>"
+            class="px-4 py-2 border rounded-lg"
+          >
+            Go Back
+          </a>
+
+          <button
+            type="submit"
+            class="bg-red-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-700"
+          >
+            Apply Redaction
+          </button>
+        </div>
+      </form>
+    </div>
+
+  </main>
+
+</body>
+</html>

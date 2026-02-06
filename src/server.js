@@ -4,6 +4,7 @@ const PORT = process.env.PORT || 3000;
 const path = require('path');
 
 const rootDir = require('./utils/pathUtils');
+const redactionRouter = require('./routes/redactRouter');
 const peekRouter = require('./routes/peekRouter');
 const compressRouter = require('./routes/compressRouter');
 const compressPPTRouter = require('./routes/compressPPTRouter');
@@ -32,7 +33,7 @@ app.use("/compress/ppt",compressPPTRouter);
 
 app.use("/split/pdf",splitRouter);
 
-
+app.use('/redaction', redactionRouter);
 
 const server = http.createServer(app);
 server.listen(PORT, () => {

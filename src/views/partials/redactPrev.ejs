@@ -1,0 +1,302 @@
+<script>
+  const pdfUrl = "<%= pdfUrl %>";
+  const container = document.getElementById("pdf-container");
+  const listEl = document.getElementById("redaction-list");
+  const applyBtn = document.getElementById("apply-btn");
+
+  // State
+  // Array of Groups: { id, page, text, rects: [ {x, y, w, h}, ... ] }
+  let redactionGroups = [];
+  const SCALE = 1.3;
+
+  // Initialize PDF
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+  console.log("Loading PDF from:", pdfUrl);
+
+  pdfjsLib.getDocument(pdfUrl).promise.then(async pdf => {
+    console.log("PDF loaded, pages:", pdf.numPages);
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      await renderPage(pdf, pageNum);
+    }
+  }).catch(err => {
+    console.error("Error loading PDF:", err);
+    alert("Error loading PDF preview: " + err.message);
+  });
+
+  async function renderPage(pdf, pageNum) {
+    const page = await pdf.getPage(pageNum);
+    const viewport = page.getViewport({ scale: SCALE });
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "page-wrapper relative border shadow-sm mb-4 inline-block";
+    wrapper.dataset.pageNum = pageNum;
+
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    canvas.style.display = "block";
+
+    const textLayerDiv = document.createElement("div");
+    textLayerDiv.className = "textLayer absolute top-0 left-0 right-0 bottom-0 select-text";
+    textLayerDiv.style.width = `${viewport.width}px`;
+    textLayerDiv.style.height = `${viewport.height}px`;
+    textLayerDiv.style.setProperty('--scale-factor', SCALE);
+
+    wrapper.appendChild(canvas);
+    wrapper.appendChild(textLayerDiv);
+    container.appendChild(wrapper);
+
+    await page.render({ canvasContext: ctx, viewport }).promise;
+
+    const textContent = await page.getTextContent();
+    pdfjsLib.renderTextLayer({
+      textContentSource: textContent,
+      container: textLayerDiv,
+      viewport: viewport,
+      textDivs: []
+    });
+
+    // Disable text selection cursor to indicate free-form drawing
+    textLayerDiv.style.cursor = "crosshair";
+    textLayerDiv.style.pointerEvents = "auto";
+    textLayerDiv.style.userSelect = "none";
+
+    setupDrawing(wrapper, pageNum);
+  }
+
+  let isDrawing = false;
+  let currentRect = null;
+  let startX, startY;
+
+  function setupDrawing(wrapper, pageNum) {
+    const canvas = wrapper.querySelector("canvas");
+
+    wrapper.addEventListener("mousedown", (e) => {
+      if (e.button !== 0) return; // Only left click
+      isDrawing = true;
+      const rect = wrapper.getBoundingClientRect();
+      startX = e.clientX - rect.left;
+      startY = e.clientY - rect.top;
+
+      currentRect = document.createElement("div");
+      currentRect.className = "redaction-box absolute bg-black opacity-50 z-20 pointer-events-none border border-white";
+      currentRect.style.left = `${startX}px`;
+      currentRect.style.top = `${startY}px`;
+      wrapper.appendChild(currentRect);
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      if (!isDrawing || !currentRect) return;
+      const rect = wrapper.getBoundingClientRect();
+      const curX = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+      const curY = Math.max(0, Math.min(e.clientY - rect.top, rect.height));
+
+      const left = Math.min(startX, curX);
+      const top = Math.min(startY, curY);
+      const width = Math.abs(curX - startX);
+      const height = Math.abs(curY - startY);
+
+      currentRect.style.left = `${left}px`;
+      currentRect.style.top = `${top}px`;
+      currentRect.style.width = `${width}px`;
+      currentRect.style.height = `${height}px`;
+    });
+
+    window.addEventListener("mouseup", (e) => {
+      if (!isDrawing || !currentRect) return;
+      isDrawing = false;
+
+      const finalRect = {
+        x: parseFloat(currentRect.style.left),
+        y: parseFloat(currentRect.style.top),
+        width: parseFloat(currentRect.style.width),
+        height: parseFloat(currentRect.style.height)
+      };
+
+      // Remove the temporary drawing box
+      currentRect.remove();
+      currentRect = null;
+
+      if (finalRect.width < 5 || finalRect.height < 5) return; // Ignore tiny clicks
+
+      const group = {
+        id: Date.now() + Math.random(),
+        page: pageNum,
+        text: "Area Selection",
+        rects: [
+          {
+            x: finalRect.x / SCALE,
+            y: finalRect.y / SCALE,
+            width: finalRect.width / SCALE,
+            height: finalRect.height / SCALE,
+            display: finalRect
+          }
+        ]
+      };
+
+      redactionGroups.push(group);
+      drawRedactionOverlay(wrapper, group);
+      updateList();
+    });
+  }
+
+  function handleSelection(wrapper, pageNum) {
+    // This is now replaced by setupDrawing
+  }
+
+  function drawRedactionOverlay(wrapper, group) {
+    group.rects.forEach(r => {
+      const div = document.createElement("div");
+      div.className = "redaction-box absolute bg-black opacity-70 z-10 cursor-pointer hover:opacity-90 transition";
+      div.style.left = `${r.display.x}px`;
+      div.style.top = `${r.display.y}px`;
+      div.style.width = `${r.display.width}px`;
+      div.style.height = `${r.display.height}px`;
+
+      // Link this box to the GROUP ID
+      div.dataset.groupId = group.id;
+      div.title = "Click to remove selection";
+
+      div.onclick = (e) => {
+        e.stopPropagation();
+        removeRedactionGroup(group.id);
+      };
+
+      wrapper.appendChild(div);
+    });
+  }
+
+  function updateList() {
+    listEl.innerHTML = "";
+    const countBadge = document.getElementById("redaction-count-badge");
+    const count = redactionGroups.length;
+
+    if (countBadge) {
+      countBadge.textContent = `${count} ${count === 1 ? 'Item' : 'Items'}`;
+    }
+
+    if (count === 0) {
+      listEl.innerHTML = `
+        <div class="flex flex-col items-center justify-center py-10 text-center">
+            <div class="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mb-3">
+                <svg class="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+            </div>
+            <p class="text-slate-400 text-xs font-medium">No areas selected yet.</p>
+            <p class="text-slate-300 text-[10px] mt-1">Drag anywhere on the PDF to start.</p>
+        </div>
+      `;
+      applyBtn.disabled = true;
+      return;
+    }
+
+    applyBtn.disabled = false;
+
+    redactionGroups.forEach(g => {
+      const li = document.createElement("li");
+      li.className = "group flex justify-between items-center bg-white p-3 rounded-xl border border-slate-100 hover:border-rose-200 hover:shadow-sm transition-all duration-200";
+
+      li.innerHTML = `
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center text-[10px] font-bold text-rose-500 border border-rose-100">
+                P${g.page}
+            </div>
+            <div class="flex flex-col">
+                <span class="text-xs font-bold text-slate-700">Area Selection</span>
+                <span class="text-[10px] text-slate-400">Target locked for removal</span>
+            </div>
+        </div>
+        <button onclick="removeRedactionGroup(${g.id})" class="text-slate-300 hover:text-rose-500 transition-colors p-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+        </button>
+      `;
+      listEl.appendChild(li);
+    });
+  }
+
+  // Update page counter during scroll
+  container.addEventListener("scroll", () => {
+    const wrappers = container.querySelectorAll(".page-wrapper");
+    let currentPage = 1;
+    const containerTop = container.getBoundingClientRect().top;
+
+    wrappers.forEach(w => {
+      const rect = w.getBoundingClientRect();
+      if (rect.top - containerTop < 100) {
+        currentPage = w.dataset.pageNum;
+      }
+    });
+
+    const pageCounter = document.getElementById("page-counter");
+    if (pageCounter) {
+      pageCounter.textContent = `Page ${currentPage} of ${wrappers.length}`;
+    }
+  });
+
+  function removeRedactionGroup(id) {
+    const idx = redactionGroups.findIndex(g => g.id === id);
+    if (idx !== -1) {
+      redactionGroups.splice(idx, 1);
+
+      // Remove all overlays for this group
+      const overlays = document.querySelectorAll(`.redaction-box[data-group-id="${id}"]`);
+      overlays.forEach(o => o.remove());
+
+      updateList();
+    }
+  }
+
+  async function submitRedactions() {
+    if (redactionGroups.length === 0) return;
+
+    applyBtn.textContent = "Processing...";
+    applyBtn.disabled = true;
+
+    // Flatten groups into list of boxes for backend
+    const payload = redactionGroups.flatMap(g =>
+      g.rects.map(r => ({
+        page: g.page,
+        x: r.x,
+        y: r.y,
+        width: r.width,
+        height: r.height,
+        // We can pass text too if backend wants it validation, but coord based script ignores it
+        // actually OCR script uses coords to find text.
+      }))
+    );
+
+    try {
+      const res = await fetch("/redaction/execute", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          filename: "<%= pdfUrl.split('/').pop() %>",
+          redactions: payload
+        })
+      });
+
+      if (!res.ok) throw new Error("Redaction failed");
+
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "redacted_document.pdf";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+
+      applyBtn.textContent = "Apply Redaction";
+      applyBtn.disabled = false;
+      alert("Redacted PDF downloaded successfully!");
+
+    } catch (err) {
+      console.error(err);
+      alert("Error processing redaction: " + err.message);
+      applyBtn.textContent = "Apply Redaction";
+      applyBtn.disabled = false;
+    }
+  }
+</script>

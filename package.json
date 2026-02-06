@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "tailwind": "npx @tailwindcss/cli -i ./src/views/input.css -o ./src/public/output.css --watch",
     "dev": "concurrently \"nodemon src/server.js\" \"npm run tailwind\"",
-    "start": "node src/server.js"
+    "setup" : "py scripts/setup.py",
+    "start": "npm run setup && node src/server.js"
   },
   "repository": {
     "type": "git",

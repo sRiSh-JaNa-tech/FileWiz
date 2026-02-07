@@ -4,3 +4,5 @@ pymupdf
 PyPDF2
 pillow
 pytesseract
+reportlab
+pdfkit

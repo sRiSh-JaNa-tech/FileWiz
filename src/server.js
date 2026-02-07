@@ -41,6 +41,9 @@ app.use("/encrypt", encryptRouter);
 
 app.use("/repair", repairRouter);
 
+const convertRouter = require('./routes/convertRouter');
+app.use("/convert", convertRouter);
+
 const server = http.createServer(app);
 server.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

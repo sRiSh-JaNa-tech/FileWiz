@@ -6,3 +6,5 @@ pillow
 pytesseract
 reportlab
 pdfkit
+pdf2docx
+

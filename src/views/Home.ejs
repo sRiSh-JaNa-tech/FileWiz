@@ -8,142 +8,316 @@
         <%= title %>
     </title>
     <link href="/output.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --primary: #2563eb;
+            --secondary: #475569;
+            --accent: #f59e0b;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+            border-color: rgba(37, 99, 235, 0.2);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+        }
+
+        .icon-holder {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .glass-card:hover .icon-holder {
+            transform: scale(1.1) rotate(3deg);
+        }
+
+        .ad-banner {
+            background: linear-gradient(90deg, #1e293b, #0f172a);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ad-shine {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: skewX(-20deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            100% {
+                left: 200%;
+            }
+        }
+    </style>
 </head>
 
-<body class="min-h-screen bg-gray-50 flex flex-col">
-    <header>
+<body class="min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <header class="sticky top-0 z-50">
         <%- include('partials/nav') %>
     </header>
-    <main class="flex-1 bg-gray-50">
-        <!-- Hero Section -->
-        <section class="max-w-7xl mx-auto px-4 py-16 text-center">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800">
-                Your All-in-One File Management Toolkit
-            </h1>
 
-            <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-                FileHelper brings powerful file tools together — simple, fast, and secure.
-            </p>
+    <main class="flex-1">
+
+        <!-- HERO SECTION -->
+        <section class="hero-gradient pt-20 pb-24 px-6 relative overflow-hidden">
+
+            <!-- Background Image -->
+            <img
+                src="/assets/678.jpg"
+                alt="Hero Background"
+                class="absolute inset-0 w-full h-full object-fit z-0"
+            />
+
+            <!-- Overlay for readability -->
+            <div class="absolute inset-0 backdrop: blur-sm z-0"></div>
+
+            <!-- Decorative Blobs -->
+            <div
+                class="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-20
+                    translate-x-1/2 -translate-y-1/2 pointer-events-none z-0">
+            </div>
+
+            <div
+                class="absolute bottom-0 left-0 w-72 h-72 bg-indigo-100 rounded-full blur-3xl opacity-20
+                    -translate-x-1/2 translate-y-1/2 pointer-events-none z-0">
+            </div>
+
+            <!-- Content -->
+            <div class="max-w-4xl mx-auto text-center relative z-10">
+                <span
+                    class="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-600
+                        text-xs font-bold uppercase tracking-widest mb-4 border border-blue-100">
+                    FileWiz Suite v2.0
+                </span>
+
+                <h1 class="text-5xl md:text-7xl font-black leading-tight mb-6 tracking-tight text-slate-100">
+                    Your Files. <br>
+                    <span
+                        class="text-transparent bg-clip-text
+                                bg-gradient-to-r from-blue-400 via-indigo-400 to-violet-400
+                                drop-shadow-[0_2px_12px_rgba(99,102,241,0.35)]">
+                        Mastered.
+                    </span>
+                </h1>
+                <p class="text-xl text-blue-300/90 max-w-2xl mx-auto leading-relaxed mb-10">
+                    Secure, convert, repair, and manage your documents with our professional-grade toolkit.
+                    No uploads to external servers—100% private.
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="#services"
+                    class="bg-slate-900 text-white px-8 py-4 rounded-xl font-bold
+                            hover:bg-slate-800 transition-all">
+                        Explore Tools
+                    </a>
+
+                    <a href="#"
+                    class="bg-white text-slate-700 border border-slate-200 px-8 py-4 rounded-xl
+                            font-bold hover:bg-slate-50 transition-all">
+                        Learn More
+                    </a>
+                </div>
+            </div>
         </section>
 
-        <!-- Product Cards -->
-        <section class="max-w-7xl mx-auto px-4 pb-20">
-            <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <!-- ADVERTISEMENT BANNER (Thin) -->
+        <div class="bg-slate-900 text-white py-3 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-6 flex items-center justify-center gap-4 text-sm font-medium">
+                <span class="bg-indigo-500 text-[10px] font-bold px-2 py-0.5 rounded uppercase">New</span>
+                <p>Pro users can now process files up to 2GB! <a href="#"
+                        class="underline hover:text-blue-300 ml-1">Upgrade Plan</a></p>
+            </div>
+        </div>
 
-                <!-- Card 1: Peek -->
-                <a href="/peek/display" class="group bg-white rounded-xl shadow hover:shadow-xl transition p-6">
-                    <div class="mb-4">
-                        <img src="/assets/stare.png" alt="Peek Files" class="h-12 w-12 mx-auto" />
+        <!-- SERVICES GRID -->
+        <section id="services" class="max-w-7xl mx-auto px-6 py-20">
+            <div class="flex items-center justify-between mb-12">
+                <div>
+                    <h2 class="text-3xl font-black text-slate-800">Core Utilities</h2>
+                    <p class="text-slate-500 mt-1">Everything you need to handle your PDF workflow.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <!-- 1. REDACT -->
+                <a href="/redaction" class="glass-card rounded-3xl p-6 group">
+                    <div class="icon-holder w-16 h-16 mb-6">
+                        <img src="/assets/storage.png" alt="Redact"
+                            class="w-8 h-8 opacity-80 group-hover:opacity-100 transition-opacity"
+                            onerror="this.src='https://placehold.co/400x400/BFDBFE/1E40AF?text=RD';">
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600">
-                        Peek Files
-                    </h3>
-                    <p class="mt-2 text-gray-600">
-                        Preview and Edit zip files instantly without opening them.
+                    <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-blue-600 transition-colors">Redact
+                        Information</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Permanently sanitize sensitive data. Hide text, images, and metadata securely.
                     </p>
                 </a>
 
-                <!-- Card 2: Convert -->
-                <a href="/Convert" class="group bg-white rounded-xl shadow hover:shadow-xl transition p-6">
-                    <div class="mb-4">
-                        <img src="/assets/convert.png" alt="Peek Files" class="h-12 w-12 mx-auto" />
+                <!-- 2. ENCRYPT -->
+                <a href="/encrypt" class="glass-card rounded-3xl p-6 group">
+                    <div class="icon-holder w-16 h-16 mb-6">
+                        <img src="/assets/encrpyted-file.png" alt="Encrypt"
+                            class="w-8 h-8 opacity-80 group-hover:opacity-100 transition-opacity"
+                            onerror="this.src='https://placehold.co/400x400/BFDBFE/1E40AF?text=LK';">
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600">
-                        Convert PDF
-                    </h3>
-                    <p class="mt-2 text-gray-600">
-                        Convert PDFs to multiple formats with ease.
+                    <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-blue-600 transition-colors">
+                        Encrypt PDF</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Protect your documents with military-grade AES encryption and password locks.
                     </p>
                 </a>
 
-                <!-- Card 3: Compress -->
-                <a href="/compress/pdf" class="group bg-white rounded-xl shadow hover:shadow-xl transition p-6">
-                    <div class="mb-4">
-                        <img src="/assets/folder.png" alt="Peek Files" class="h-12 w-12 mx-auto" />
+                <!-- 3. REPAIR -->
+                <a href="/repair" class="glass-card rounded-3xl p-6 group">
+                    <div class="icon-holder w-16 h-16 mb-6">
+                        <img src="/assets/repair-tools.png" alt="Repair"
+                            class="w-8 h-8 opacity-80 group-hover:opacity-100 transition-opacity"
+                            onerror="this.src='https://placehold.co/400x400/BFDBFE/1E40AF?text=FX';">
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600">
-                        Compress PDF
-                    </h3>
-                    <p class="mt-2 text-gray-600">
-                        Lossless compression of PDFs to reduce file size.
+                    <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-blue-600 transition-colors">Repair
+                        Structure</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Detect corruption and rebuild broken PDF headers and cross-reference tables.
                     </p>
                 </a>
 
-                <!-- Card 4: RESERVED -->
-                <!-- TODO: Add feature (e.g., Merge PDFs) -->
-                <a href="/compress/ppt" class="group bg-white rounded-xl shadow hover:shadow-xl transition p-6">
-                    <div class="mb-4">
-                        <img src="/assets/powerpoint.png" alt="Peek Files" class="h-12 w-12 mx-auto" />
+                <!-- 4. CONVERT -->
+                <a href="/convert" class="glass-card rounded-3xl p-6 group">
+                    <div class="icon-holder w-16 h-16 mb-6">
+                        <img src="/assets/convert.png" alt="Convert"
+                            class="w-8 h-8 opacity-80 group-hover:opacity-100 transition-opacity"
+                            onerror="this.src='https://placehold.co/400x400/BFDBFE/1E40AF?text=CV';">
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600">
-                        Compress PPT
-                    </h3>
-                    <p class="mt-2 text-gray-600">
-                        Easily compress PowerPoint files for email and more.
+                    <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-blue-600 transition-colors">
+                        Convert Format</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Transform PDFs into high-quality images (PNG, JPEG), HTML, or DOCX documents.
                     </p>
                 </a>
 
-                <!-- Card 5: RESERVED -->
-                <!-- TODO: Add feature (e.g., Split PDFs) -->
-                <a href="/split/pdf" class="group bg-white rounded-xl shadow hover:shadow-xl transition p-6">
-                    <div class="mb-4">
-                        <img src="/assets/document.png" alt="Peek Files" class="h-12 w-12 mx-auto" />
+                <!-- 5. COMPRESS PDF -->
+                <a href="/compress/pdf" class="glass-card rounded-3xl p-6 group">
+                    <div class="icon-holder w-16 h-16 mb-6">
+                        <img src="/assets/folder.png" alt="Compress"
+                            class="w-8 h-8 opacity-80 group-hover:opacity-100 transition-opacity"
+                            onerror="this.src='https://placehold.co/400x400/BFDBFE/1E40AF?text=CP';">
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600">
-                        Split PDF
-                    </h3>
-                    <p class="mt-2 text-gray-600">
-                        Split PDF into desired amount.
+                    <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-blue-600 transition-colors">
+                        Compress PDF</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Reduce file size without losing quality. Perfect for email attachments.
                     </p>
                 </a>
 
-                <!-- Card 6: RESERVED -->
-                <!-- TODO: Add feature (e.g., File Encryption) -->
-                <a href="/redaction" class="group bg-white rounded-xl shadow hover:shadow-xl transition p-6">
-                    <div class="mb-4">
-                        <img src="/assets/storage.png" alt="Peek Files" class="h-12 w-12 mx-auto" />
+                <!-- 6. SPLIT -->
+                <a href="/split/pdf" class="glass-card rounded-3xl p-6 group">
+                    <div class="icon-holder w-16 h-16 mb-6">
+                        <img src="/assets/document.png" alt="Split"
+                            class="w-8 h-8 opacity-80 group-hover:opacity-100 transition-opacity"
+                            onerror="this.src='https://placehold.co/400x400/BFDBFE/1E40AF?text=SP';">
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600">
-                        Redact PDF
-                    </h3>
-                    <p class="mt-2 text-gray-600">
-                        Redact UI seemslessly using professional tools.
+                    <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-blue-600 transition-colors">Split
+                        Pages</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Extract specific pages or split a large document into multiple smaller files.
                     </p>
                 </a>
 
-                <!-- Card 7: RESERVED -->
-                <!-- TODO: Add feature (e.g., OCR Scanner) -->
-                <a href="/encrypt" class="group bg-white rounded-xl shadow hover:shadow-xl transition p-6">
-                    <div class="mb-4">
-                        <img src="assets\encrpyted-file.png" alt="Peek Files" class="h-12 w-12 mx-auto" />
+                <!-- 7. PEEK -->
+                <a href="/peek/display" class="glass-card rounded-3xl p-6 group">
+                    <div class="icon-holder w-16 h-16 mb-6">
+                        <img src="/assets/stare.png" alt="Peek"
+                            class="w-8 h-8 opacity-80 group-hover:opacity-100 transition-opacity"
+                            onerror="this.src='https://placehold.co/400x400/BFDBFE/1E40AF?text=PK';">
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600">
-                        Encrypt PDF
-                    </h3>
-                    <p class="mt-2 text-gray-600">
-                        Secure your PDF using encrpyt PDF feature.
+                    <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-blue-600 transition-colors">X-Ray
+                        Peek</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Inspect file internals and structure without opening dangerous executables.
                     </p>
                 </a>
 
-                <!-- Card 8: RESERVED -->
-                <!-- TODO: Add feature (e.g., Cloud Upload) -->
-                <a href="/repair" class="group bg-white rounded-xl shadow hover:shadow-xl transition p-6">
-                    <div class="mb-4">
-                        <img src="assets\encrpyted-file.png" alt="Peek Files" class="h-12 w-12 mx-auto" />
+                <!-- 8. COMPRESS PPT -->
+                <a href="/compress/ppt" class="glass-card rounded-3xl p-6 group">
+                    <div class="icon-holder w-16 h-16 mb-6">
+                        <img src="/assets/powerpoint.png" alt="PPT"
+                            class="w-8 h-8 opacity-80 group-hover:opacity-100 transition-opacity"
+                            onerror="this.src='https://placehold.co/400x400/BFDBFE/1E40AF?text=PP';">
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600">
-                        Encrypt PDF
-                    </h3>
-                    <p class="mt-2 text-gray-600">
-                        Secure your PDF using encrpyt PDF feature.
+                    <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-blue-600 transition-colors">Shrink
+                        Slides</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Optimize PowerPoint presentations for web sharing and faster loading.
                     </p>
                 </a>
 
             </div>
         </section>
 
-    </main>
+        <!-- LARGE ADVERTISEMENT / PROMO -->
+        <section class="max-w-7xl mx-auto px-6 pb-20">
+            <div
+                class="ad-banner rounded-3xl p-8 md:p-12 text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="ad-shine"></div>
+                <div class="z-10 max-w-xl">
+                    <h2 class="text-3xl font-black text-white mb-4">Go Limitless with FileWiz Pro</h2>
+                    <p class="text-slate-300 text-lg mb-6">
+                        Unlock batch processing, higher file size limits, and priority cloud support.
+                        Start your 14-day free trial today.
+                    </p>
+                    <div class="flex flex-wrap gap-4 justify-center md:justify-start">
+                        <button
+                            class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-bold transition-all">
+                            Get Started
+                        </button>
+                        <button
+                            class="bg-transparent border border-slate-600 text-slate-300 hover:text-white hover:border-white px-6 py-3 rounded-xl font-bold transition-all">
+                            View Pricing
+                        </button>
+                    </div>
+                </div>
+                <div class="z-10 relative">
+                    <div
+                        class="w-64 h-48 bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl flex items-center justify-center">
+                        <span class="text-white/50 font-bold uppercase tracking-widest">[ Graphic Placement ]</span>
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-blue-500 rounded-full blur-3xl opacity-30">
+                    </div>
+                </div>
+            </div>
+        </section>
 
+    </main>
 </body>
 
 </html>

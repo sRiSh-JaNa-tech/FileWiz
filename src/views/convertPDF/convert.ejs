@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        <%= title || 'Convert PDF' %>
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/output.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #f8fafc;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Custom Radio Cards */
+        .radio-card input:checked+div {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+            color: #1d4ed8;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col bg-slate-50">
+    <header class="sticky top-0 z-50">
+        <%- include('../partials/nav') %>
+    </header>
+
+    <main class="flex-1 max-w-5xl mx-auto px-4 py-12 w-full">
+
+        <div class="text-center mb-10">
+            <h1 class="text-4xl font-black text-slate-800 mb-2">Convert PDF</h1>
+            <p class="text-slate-500">Transform your PDF into images or HTML instantly.</p>
+        </div>
+
+        <div class="glass-card rounded-3xl p-8 max-w-2xl mx-auto shadow-xl">
+
+            <% if (error) { %>
+                <div
+                    class="bg-rose-50 border border-rose-200 text-rose-600 px-4 py-3 rounded-xl mb-6 text-sm font-bold">
+                    <%= error %>
+                </div>
+                <% } %>
+
+                    <form action="/convert/upload" method="POST" enctype="multipart/form-data" class="space-y-8">
+
+                        <!-- File Input -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">1.
+                                Upload PDF</label>
+                            <input type="file" name="pdf" accept=".pdf" required
+                                class="block w-full text-sm text-slate-500 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all cursor-pointer bg-white border border-slate-200 rounded-full" />
+                        </div>
+
+                        <!-- Format Selection -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">2.
+                                Choose Output Format</label>
+                            <div class="grid grid-cols-3 gap-4">
+
+                                <label class="cursor-pointer radio-card">
+                                    <input type="radio" name="format" value="png" class="hidden" checked>
+                                    <div
+                                        class="border-2 border-slate-100 rounded-2xl p-4 text-center hover:border-blue-200 transition-all">
+                                        <div class="font-black text-lg mb-1">PNG</div>
+                                        <div class="text-xs text-slate-400 font-bold uppercase">Image</div>
+                                    </div>
+                                </label>
+
+                                <label class="cursor-pointer radio-card">
+                                    <input type="radio" name="format" value="jpeg" class="hidden">
+                                    <div
+                                        class="border-2 border-slate-100 rounded-2xl p-4 text-center hover:border-blue-200 transition-all">
+                                        <div class="font-black text-lg mb-1">JPEG</div>
+                                        <div class="text-xs text-slate-400 font-bold uppercase">Image</div>
+                                    </div>
+                                </label>
+
+                                <label class="cursor-pointer radio-card">
+                                    <input type="radio" name="format" value="html" class="hidden">
+                                    <div
+                                        class="border-2 border-slate-100 rounded-2xl p-4 text-center hover:border-blue-200 transition-all">
+                                        <div class="font-black text-lg mb-1">HTML</div>
+                                        <div class="text-xs text-slate-400 font-bold uppercase">Web</div>
+                                    </div>
+                                </label>
+
+                                <label class="cursor-pointer radio-card">
+                                    <input type="radio" name="format" value="docx" class="hidden">
+                                    <div
+                                        class="border-2 border-slate-100 rounded-2xl p-4 text-center hover:border-blue-200 transition-all">
+                                        <div class="font-black text-lg mb-1">DOCX</div>
+                                        <div class="text-xs text-slate-400 font-bold uppercase">Word</div>
+                                    </div>
+                                </label>
+
+                            </div>
+                        </div>
+
+                        <!-- Page Range -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">3. Page
+                                Range (Optional)</label>
+                            <div class="flex gap-4">
+                                <div class="w-1/2">
+                                    <input type="number" name="startPage" placeholder="Start Page" min="1"
+                                        class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 outline-none transition-all">
+                                </div>
+                                <div class="w-1/2">
+                                    <input type="number" name="endPage" placeholder="End Page" min="1"
+                                        class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 outline-none transition-all">
+                                </div>
+                            </div>
+                            <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase">Leave empty to convert the
+                                full document.</p>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-2xl text-sm uppercase tracking-widest shadow-lg shadow-blue-500/20 transition-all transform hover:-translate-y-1">
+                            Convert File
+                        </button>
+
+                    </form>
+
+                    <% if (result) { %>
+                        <div
+                            class="mt-8 pt-8 border-t border-slate-100 text-center animate-in fade-in slide-in-from-bottom-4">
+                            <div class="bg-green-50 text-green-700 px-6 py-4 rounded-2xl inline-block mb-4">
+                                <span class="font-bold flex items-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Conversion Successful
+                                </span>
+                            </div>
+
+                            <p class="text-slate-500 mb-6 text-sm">Your file has been converted to <strong>
+                                    <%= result.mode %>
+                                </strong>.</p>
+
+                            <a href="<%= result.downloadUrl %>" id="download-link"
+                                class="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-3 rounded-xl font-bold hover:bg-slate-800 transition-all">
+                                <span>Download Result</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                </svg>
+                            </a>
+                        </div>
+
+                        <script>
+                            setTimeout(() => {
+                                document.getElementById('download-link').click();
+                            }, 1000);
+                        </script>
+                        <% } %>
+
+        </div>
+
+    </main>
+</body>
+
+</html>

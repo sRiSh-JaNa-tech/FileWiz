@@ -13,11 +13,85 @@
 
 
       <!-- Desktop Links -->
-      <div class="hidden md:flex space-x-8">
+      <div class="hidden md:flex items-center space-x-8">
         <a href="/" class="text-gray-700 hover:text-blue-600">Home</a>
         <a href="/peek/display" class="text-gray-700 hover:text-blue-600">Peek</a>
-        <a href="/Convert" class="text-gray-700 hover:text-blue-600">Convert PDF</a>
+        <a href="/convert" class="text-gray-700 hover:text-blue-600">Convert PDF</a>
         <a href="/compress/pdf" class="text-gray-700 hover:text-blue-600">Compress PDF</a>
+
+        <!-- Dropdown Menu -->
+        <div class="relative group">
+          <button id="tools-dropdown-btn"
+            class="flex items-center text-gray-700 hover:text-blue-600 focus:outline-none font-medium">
+            More Tools
+            <svg class="ml-1 w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor"
+              viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div id="tools-dropdown-menu"
+            class="hidden absolute top-full -left-4 w-56 bg-white border border-gray-100 rounded-2xl shadow-2xl py-3 z-[100] mt-1 animate-in fade-in slide-in-from-top-2">
+            <div
+              class="px-4 py-2 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50 mb-1">
+              Safety & Structure
+            </div>
+            <a href="/redaction"
+              class="flex items-center gap-3 px-4 py-2.5 text-slate-600
+                      hover:bg-blue-50 hover:text-blue-600 transition-all">
+              <img
+                src="/assets/storage.png"
+                alt="Redact"
+                class="w-5 h-5 object-contain"
+              />
+
+              Redact Information
+            </a>
+            <a href="/encrypt"
+              class="flex items-center gap-3 px-4 py-2.5 text-slate-600
+                      hover:bg-blue-50 hover:text-blue-600 transition-all">
+              <img
+                src="/assets/encrpyted-file.png"
+                alt="Encrypt"
+                class="w-5 h-5 object-contain"
+              />
+              Encrypt PDF
+            </a>
+            <a href="/repair"
+              class="flex items-center gap-3 px-4 py-2.5 text-slate-600
+                      hover:bg-blue-50 hover:text-blue-600 transition-all">
+              <img
+                src="/assets/repair-tools.png"
+                alt="Repair"
+                class="w-5 h-5 object-contain"
+              />
+              Repair Structure
+            </a>
+            <div
+              class="px-4 py-2 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50 mt-2 mb-1">
+              Optimization
+            </div>
+            <a href="/split/pdf"
+              class="flex items-center gap-3 px-4 py-2.5 text-slate-600
+                      hover:bg-blue-50 hover:text-blue-600 transition-all">
+              <img
+                src="/assets/document.png"
+                alt="Split"
+                class="w-5 h-5 object-contain"
+              />
+              Split Pages
+            </a>
+            <a href="/compress/ppt"
+              class="flex items-center gap-3 px-4 py-2.5 text-slate-600
+                      hover:bg-blue-50 hover:text-blue-600 transition-all">
+              <img
+                src="/assets/powerpoint.png"
+                alt="powerpoint"
+                class="w-5 h-5 object-contain"
+              />
+              Compress PPT
+            </a>
+          </div>
+        </div>
       </div>
 
       <!-- Desktop CTA -->
@@ -40,18 +114,25 @@
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden md:hidden border-t bg-white px-4 py-4 space-y-3">
-    <a href="/" class="block text-gray-700 hover:text-blue-600">Home</a>
-    <a href="/peek/display" class="block text-gray-700 hover:text-blue-600">Peek</a>
-    <a href="/Convert" class="block text-gray-700 hover:text-blue-600">Convert PDF</a>
-    <a href="/compress/pdf" class="block text-gray-700 hover:text-blue-600">Compress PDF</a>
+  <div id="mobile-menu" class="hidden md:hidden border-t bg-white px-4 py-4 space-y-3 shadow-lg">
+    <a href="/" class="block text-gray-700 hover:text-blue-600 font-medium">Home</a>
+    <a href="/peek/display" class="block text-gray-700 hover:text-blue-600 font-medium">Peek</a>
+    <a href="/convert" class="block text-gray-700 hover:text-blue-600 font-medium">Convert PDF</a>
+    <a href="/compress/pdf" class="block text-gray-700 hover:text-blue-600 font-medium">Compress PDF</a>
 
-    <hr>
+    <div class="pt-2 pb-1 text-[10px] font-black text-slate-400 uppercase tracking-widest">More Tools</div>
+    <a href="/redaction" class="block text-gray-600 hover:text-blue-600 pl-4 py-1">Redact Information</a>
+    <a href="/encrypt" class="block text-gray-600 hover:text-blue-600 pl-4 py-1">Encrypt PDF</a>
+    <a href="/repair" class="block text-gray-600 hover:text-blue-600 pl-4 py-1">Repair Structure</a>
+    <a href="/split/pdf" class="block text-gray-600 hover:text-blue-600 pl-4 py-1">Split Pages</a>
+    <a href="/compress/ppt" class="block text-gray-600 hover:text-blue-600 pl-4 py-1">Compress PPT</a>
 
-    <a href="/auth/login" class="block text-center border border-blue-600 text-blue-600 py-2 rounded-lg">
+    <hr class="border-slate-100 my-2">
+
+    <a href="/auth/login" class="block text-center border border-blue-600 text-blue-600 py-2 rounded-lg font-bold">
       Login
     </a>
-    <a href="/auth/signup" class="block text-center bg-blue-600 text-white py-2 rounded-lg">
+    <a href="/auth/signup" class="block text-center bg-blue-600 text-white py-2 rounded-lg font-bold">
       Sign Up
     </a>
   </div>
@@ -60,15 +141,33 @@
 <script>
   const btn = document.getElementById('menu-btn');
   const menu = document.getElementById('mobile-menu');
+  const toolsBtn = document.getElementById('tools-dropdown-btn');
+  const toolsMenu = document.getElementById('tools-dropdown-menu');
 
   btn.addEventListener('click', () => {
     menu.classList.toggle('hidden');
+  });
+
+  // Dropdown Toggle
+  toolsBtn.parentElement.addEventListener('mouseenter', () => {
+    toolsMenu.classList.remove('hidden');
+  });
+
+  toolsBtn.parentElement.addEventListener('mouseleave', () => {
+    toolsMenu.classList.add('hidden');
   });
 
   // Close mobile menu on resize to desktop
   window.addEventListener('resize', () => {
     if (window.innerWidth >= 768) {
       menu.classList.add('hidden');
+    }
+  });
+
+  // Optional: Close dropdown on click outside
+  window.addEventListener('click', (e) => {
+    if (!toolsBtn.contains(e.target) && !toolsMenu.contains(e.target)) {
+      toolsMenu.classList.add('hidden');
     }
   });
 </script>

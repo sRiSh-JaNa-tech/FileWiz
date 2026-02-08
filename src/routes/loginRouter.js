@@ -1,26 +1,61 @@
 const path = require('path');
 const express = require('express');
-const loginRouter = express.Router();
+const router = express.Router();
 
-loginRouter.get("/login", (req, res, next) => {
-    res.render('login/login',{error : null,title : 'Login'});
+const User = require('../models/User');
+
+router.get("/login", (req, res, next) => {
+    res.render('login/login', { error: null, title: 'Login' });
 });
 
-loginRouter.post("/login", (req, res, next) => {
+router.post("/login", async (req, res, next) => {
     const { email, password } = req.body;
-    console.log(email, password);
-    console.log(req.body);
-    //Database authentication simulation
-    if (email === 'user@gmail.com' && password === '34567') {
-        req.user = { email };
-        return res.redirect('/');
-    } else {
-        return res.render('login/login',{error : 'Invalid email or password', title : 'Login'});
+
+    const user = User.findByEmail(email);
+    if (!user) {
+        return res.render("login/login", {
+            error: "Invalid email or password",
+            title: "Login"
+        });
     }
+
+    const isValid = await user.comparePassword(password);
+    if (!isValid) {
+        return res.render("login/login", {
+            error: "Invalid email or password",
+            title: "Login"
+        });
+    }
+
+    req.session.user = {
+        email: user.email
+    }
+
+    res.redirect("/");
 });
 
-loginRouter.get("/signup", (req, res, next) => {
-    res.render('login/signup',{error : null, title : 'Signup'});
+router.get("/signup", (req, res, next) => {
+    res.render('login/signup', { error: null, title: 'Signup' });
 });
 
-module.exports = loginRouter;
+router.post('/signup', async (req, res) => {
+    const { email, password } = req.body;
+
+    if (User.findByEmail(email)) {
+        return res.render("login/signup", {
+            error: "user already exists",
+            title: "Signup"
+        });
+    }
+
+    await User.create(email, password);
+    res.redirect("/auth/login");
+});
+
+router.get('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.redirect("/auth/login");
+    })
+});
+
+module.exports = router;

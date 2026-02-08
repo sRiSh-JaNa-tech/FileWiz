@@ -35,59 +35,34 @@
               class="px-4 py-2 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50 mb-1">
               Safety & Structure
             </div>
-            <a href="/redaction"
-              class="flex items-center gap-3 px-4 py-2.5 text-slate-600
+            <a href="/redaction" class="flex items-center gap-3 px-4 py-2.5 text-slate-600
                       hover:bg-blue-50 hover:text-blue-600 transition-all">
-              <img
-                src="/assets/storage.png"
-                alt="Redact"
-                class="w-5 h-5 object-contain"
-              />
+              <img src="/assets/storage.png" alt="Redact" class="w-5 h-5 object-contain" />
 
               Redact Information
             </a>
-            <a href="/encrypt"
-              class="flex items-center gap-3 px-4 py-2.5 text-slate-600
+            <a href="/encrypt" class="flex items-center gap-3 px-4 py-2.5 text-slate-600
                       hover:bg-blue-50 hover:text-blue-600 transition-all">
-              <img
-                src="/assets/encrpyted-file.png"
-                alt="Encrypt"
-                class="w-5 h-5 object-contain"
-              />
+              <img src="/assets/encrpyted-file.png" alt="Encrypt" class="w-5 h-5 object-contain" />
               Encrypt PDF
             </a>
-            <a href="/repair"
-              class="flex items-center gap-3 px-4 py-2.5 text-slate-600
+            <a href="/repair" class="flex items-center gap-3 px-4 py-2.5 text-slate-600
                       hover:bg-blue-50 hover:text-blue-600 transition-all">
-              <img
-                src="/assets/repair-tools.png"
-                alt="Repair"
-                class="w-5 h-5 object-contain"
-              />
+              <img src="/assets/repair-tools.png" alt="Repair" class="w-5 h-5 object-contain" />
               Repair Structure
             </a>
             <div
               class="px-4 py-2 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50 mt-2 mb-1">
               Optimization
             </div>
-            <a href="/split/pdf"
-              class="flex items-center gap-3 px-4 py-2.5 text-slate-600
+            <a href="/split/pdf" class="flex items-center gap-3 px-4 py-2.5 text-slate-600
                       hover:bg-blue-50 hover:text-blue-600 transition-all">
-              <img
-                src="/assets/document.png"
-                alt="Split"
-                class="w-5 h-5 object-contain"
-              />
+              <img src="/assets/document.png" alt="Split" class="w-5 h-5 object-contain" />
               Split Pages
             </a>
-            <a href="/compress/ppt"
-              class="flex items-center gap-3 px-4 py-2.5 text-slate-600
+            <a href="/compress/ppt" class="flex items-center gap-3 px-4 py-2.5 text-slate-600
                       hover:bg-blue-50 hover:text-blue-600 transition-all">
-              <img
-                src="/assets/powerpoint.png"
-                alt="powerpoint"
-                class="w-5 h-5 object-contain"
-              />
+              <img src="/assets/powerpoint.png" alt="powerpoint" class="w-5 h-5 object-contain" />
               Compress PPT
             </a>
           </div>
@@ -96,12 +71,19 @@
 
       <!-- Desktop CTA -->
       <div class="hidden md:flex items-center space-x-3">
-        <a href="/auth/login" class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50">
-          Login
-        </a>
-        <a href="/auth/signup" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-          Sign Up
-        </a>
+        <% if (user) { %>
+          <span class="text-sm font-medium text-gray-600 mr-2">Welcome, <%= user.email.split('@')[0] %></span>
+          <a href="/auth/logout" class="px-4 py-2 text-red-600 border border-red-600 rounded-lg hover:bg-red-50">
+            Logout
+          </a>
+          <% } else { %>
+            <a href="/auth/login" class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50">
+              Login
+            </a>
+            <a href="/auth/signup" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+              Sign Up
+            </a>
+            <% } %>
       </div>
 
       <!-- Mobile Menu Button -->
@@ -129,12 +111,20 @@
 
     <hr class="border-slate-100 my-2">
 
-    <a href="/auth/login" class="block text-center border border-blue-600 text-blue-600 py-2 rounded-lg font-bold">
-      Login
-    </a>
-    <a href="/auth/signup" class="block text-center bg-blue-600 text-white py-2 rounded-lg font-bold">
-      Sign Up
-    </a>
+    <% if (user) { %>
+      <div class="px-4 py-2 text-sm text-gray-600 font-medium">Logged in as: <%= user.email %>
+      </div>
+      <a href="/auth/logout" class="block text-center border border-red-600 text-red-600 py-2 rounded-lg font-bold">
+        Logout
+      </a>
+      <% } else { %>
+        <a href="/auth/login" class="block text-center border border-blue-600 text-blue-600 py-2 rounded-lg font-bold">
+          Login
+        </a>
+        <a href="/auth/signup" class="block text-center bg-blue-600 text-white py-2 rounded-lg font-bold">
+          Sign Up
+        </a>
+        <% } %>
   </div>
 </nav>
 

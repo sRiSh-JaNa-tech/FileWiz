@@ -12,6 +12,7 @@ cleanupWorkspaces(); // Initial cleanup on startup
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieparser());
 app.use(express.static(path.join(rootDir, 'public')));
 app.use(
   '/temp',
@@ -36,7 +37,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cookieparser());
 app.set('view engine', 'ejs');
 app.set('views', path.join(rootDir, '/views'));
 

@@ -35,7 +35,7 @@ app.use("/compress/ppt", compressPPTRouter);
 
 app.use("/split/pdf", splitRouter);
 
-app.use('/redaction',usageLimit, redactionRouter);
+app.use('/redaction', usageLimit, redactionRouter);
 
 app.use("/encrypt",isAuthenticated, encryptRouter);
 

@@ -9,7 +9,7 @@ module.exports = function usageLimit(req, res, next) {
     console.log(currentUsage);
     
     if(currentUsage >= FREE_USAGE_LIMIT){
-        return res.redirect('/signup?reason=limit');
+        return res.redirect('/auth/signup?reason=limit');
     }
 
     res.cookie('usageCount', currentUsage + 1, {

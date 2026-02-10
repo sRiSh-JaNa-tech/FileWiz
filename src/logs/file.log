@@ -1,1 +1,7 @@
 [2026-02-02 06:30:04] [cleanup-service] INFO: Workspace expired & deleted: ws_1770011836367_329437
+[2026-02-09 10:22:44] [peek-service] INFO: User uploaded archive: archive1.zip
+[2026-02-09 10:56:03] [cleanup-service] INFO: Workspace expired & deleted: ws_1770632564198_818503
+[2026-02-10 11:21:09] [peek-service] INFO: User uploaded archive: archive1.zip
+[2026-02-10 11:21:18] [peek-service] INFO: File saved: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1770722469372_210755\extracted\insurance.csv
+[2026-02-10 11:21:23] [peek-service] INFO: File created: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1770722469372_210755\extracted\new.md
+[2026-02-10 11:21:31] [peek-service] INFO: File saved: C:\Users\srish\Desktop\FileWiz\src\temp\workspaces\ws_1770722469372_210755\extracted\new.md

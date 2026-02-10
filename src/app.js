@@ -1,3 +1,4 @@
+require('dotenv').config();
 const path = require('path');
 const rootDir = require('./utils/pathUtils');
 const express = require('express');

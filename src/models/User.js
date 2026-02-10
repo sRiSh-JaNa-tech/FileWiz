@@ -1,26 +1,41 @@
 const bcrypt = require('bcrypt');
+const { getDb } = require("../utils/database");
 
-const users = [] // Temporary DataBase
+// const users = [] // Temporary DataBase
 
 class User {
-    constructor(email, hashedPassword) {
+    constructor(name, age, email, password) {
+        this.name = name;
+        this.age = age;
         this.email = email;
-        this.password = hashedPassword;
+        this.password = password;
     }
 
-    static async create(email, plainPassword) {
-        const hashed = await bcrypt.hash(plainPassword, 10);
-        const user = new User(email, hashed);
-        users.push(user);
-        return user;
+    async create() {
+        try {
+            const hashed = await bcrypt.hash(this.password, 10);
+            this.password = hashed;
+            const db = getDb();
+            return await db.collection("users").insertOne(this);
+        } catch (err) {
+            console.error("User creation failed", err);
+            throw err;
+        }
     }
 
-    static findByEmail(email) {
-        return users.find(u => u.email === email);
+    static async findByEmail(email) {
+        const db = getDb();
+        return await db.collection("users").findOne({ email });
     }
 
-    async comparePassword(plainPassword) {
-        return bcrypt.compare(plainPassword, this.password);
+    static async login(email, password) {
+        const db = getDb();
+        const user = await db.collection("users").findOne({ email: email });
+        if (!user) {
+            return null;
+        }
+        const isValid = await bcrypt.compare(password, user.password);
+        return isValid ? user : null;
     }
 }
 

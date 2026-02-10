@@ -11,16 +11,8 @@ router.get("/login", (req, res, next) => {
 router.post("/login", async (req, res, next) => {
     const { email, password } = req.body;
 
-    const user = User.findByEmail(email);
+    const user = await User.login(email, password);
     if (!user) {
-        return res.render("login/login", {
-            error: "Invalid email or password",
-            title: "Login"
-        });
-    }
-
-    const isValid = await user.comparePassword(password);
-    if (!isValid) {
         return res.render("login/login", {
             error: "Invalid email or password",
             title: "Login"
@@ -39,16 +31,17 @@ router.get("/signup", (req, res, next) => {
 });
 
 router.post('/signup', async (req, res) => {
-    const { email, password } = req.body;
+    const { name, age, email, password } = req.body;
 
-    if (User.findByEmail(email)) {
+    const existingUser = await User.findByEmail(email);
+    if (existingUser) {
         return res.render("login/signup", {
             error: "user already exists",
             title: "Signup"
         });
     }
-
-    await User.create(email, password);
+    const user = new User(name, age, email, password);
+    await user.create();
     res.redirect("/auth/login");
 });
 

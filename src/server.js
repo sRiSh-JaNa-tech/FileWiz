@@ -12,7 +12,9 @@ const splitRouter = require('./routes/splitRouter');
 const encryptRouter = require('./routes/encryptionRouter');
 const repairRouter = require('./routes/repairPDFRouter');
 const loginRouter = require('./routes/loginRouter');
+const convertRouter = require('./routes/convertRouter');
 
+const {mongoConnect , getDb} = require('./utils/database');
 const isAuthenticated = require('./middlewares/auth.middleware');
 const usageLimit = require('./middlewares/usageLimit.middleware');
 
@@ -41,10 +43,11 @@ app.use("/encrypt",isAuthenticated, encryptRouter);
 
 app.use("/repair", usageLimit, repairRouter);
 
-const convertRouter = require('./routes/convertRouter');
 app.use("/convert", convertRouter);
 
 const server = http.createServer(app);
+
 server.listen(PORT, () => {
+  mongoConnect();
   console.log(`Server is running on http://localhost:${PORT}`);
 });

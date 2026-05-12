@@ -1,154 +1,120 @@
-FileWiz
-One-stop solution for file compression, extraction, and optimization
+# <p align="center"><img src="src/public/assets/open-folder.png" width="100" height="100" alt="FileWiz Logo"><br>FileWiz</p>
 
-FileWiz is a web-based utility platform that helps users compress, extract, optimize, and manage files such as .zip, .pdf, .pptx, and .docx in one unified interface.
+<p align="center">
+  <strong>The Ultimate Universal File Utility Engine</strong><br>
+  <em>Compress, Extract, Optimize, and Secure your files through a high-performance, unified web interface.</em>
+</p>
 
-Instead of relying on multiple tools or installing heavy desktop software, FileWiz provides a fast, secure, and developer-friendly solution directly in the browser.
+<p align="center">
+  <img src="https://img.shields.io/badge/Node.js-v18+-green.svg" alt="Node.js">
+  <img src="https://img.shields.io/badge/Python-3.10+-blue.svg" alt="Python">
+  <img src="https://img.shields.io/badge/Database-MongoDB-darkgreen.svg" alt="MongoDB">
+  <img src="https://img.shields.io/badge/Processing-FFMPEG-orange.svg" alt="FFMPEG">
+  <img src="https://img.shields.io/badge/License-ISC-yellow.svg" alt="License ISC">
+</p>
 
+---
 
-==================== FEATURES ====================
+## 📖 Table of Contents
+- [Overview](#-overview)
+- [Core Features](#-core-features)
+- [System Architecture](#-system-architecture)
+- [Installation & Setup](#-installation--setup)
+- [Security & Authentication](#-security--authentication)
+- [Technology Stack](#-technology-stack)
+- [Support](#-support)
 
-File Compression
-- Compress PDF, PPTX, DOCX, and ZIP files
-- Multiple compression levels (Low / Normal / Extreme)
-- Lossless compression support for PDFs
-- Smart handling of file contents
+---
 
-File Extraction & Archive Management
-- Extract ZIP files
-- Peek inside ZIP archives without extracting
-- Edit or create files inside ZIP without opening it
-- Download specific files from archive
+## 🌟 Overview
 
-File Optimization
-- PDF compression using Ghostscript
-- PPT compression with customizable levels
-- Option to remove images from PPT for maximum compression
-- Media compression using FFMPEG
+**FileWiz** is a production-grade, full-stack utility platform designed to handle the most common yet complex file operations directly in the browser. Instead of juggling multiple desktop applications or untrusted online tools, FileWiz offers a secure, fast, and unified environment for managing archives, optimizing PDFs, and compressing media.
 
-Performance & Processing
-- Fast server-side processing
-- Efficient file handling
-- Python-powered processing for heavy tasks
+Built with a hybrid architecture of **Node.js** for orchestration and **Python** for heavy-duty processing, FileWiz ensures that resource-intensive tasks are handled with maximum efficiency and zero permanent footprint.
 
-Reliability & Security
-- No permanent file storage
-- Automatic file cleanup after processing
-- Isolated processing for each request
-- Safe handling of user uploads
+---
 
+## 🚀 Core Features
 
-==================== TECH STACK ====================
+-   **📦 Advanced ZIP Management**: Peek inside ZIP archives, edit contents, and download specific files without ever needing to extract the full archive locally.
+-   **📄 Precision PDF Optimization**: Lossless and high-compression modes powered by Ghostscript to drastically reduce file size while maintaining readability.
+-   **📽️ Multi-Level PPT Compression**: Customizable compression levels (Normal vs. Extreme) including the ability to strip heavy images for maximum portability.
+-   **🎥 Universal Media Compression**: Integrated FFMPEG pipelines for optimizing video and audio files without losing perceived quality.
+-   **🔐 Integrated Authentication**: Secure user accounts with session management and MongoDB persistence for a personalized experience.
+-   **🧹 Auto-Cleanup Pipeline**: A robust temporary file management system that ensures user data is strictly isolated and automatically wiped after processing.
 
-Frontend
-- HTML
-- CSS
-- EJS (Templating Engine)
+---
 
-Backend
-- Node.js
-- Express.js
+## 🏗️ System Architecture
 
-Processing & Tools
-- Python (compression and optimization logic)
-- Ghostscript (PDF compression and optimization)
-- FFMPEG (media compression)
+FileWiz follows a modular processing pipeline:
 
+1.  **Orchestration Layer (Node.js/Express)**: Handles user requests, file uploads, authentication, and session state. It acts as the gatekeeper for the system.
+2.  **Logic Engine (Python)**: Specialized scripts handle format-specific tasks like OCR (Tesseract), PDF manipulation (PyMuPDF/PyPDF2), and document conversion.
+3.  **Tooling Core (GS/FFMPEG)**: Low-level system binaries perform the heavy lifting for compression and structural repair.
+4.  **Persistence Layer (MongoDB)**: Stores user credentials and profile metadata, while binary data remains temporary and ephemeral.
 
-==================== REQUIREMENTS ====================
+---
 
-Make sure the following are installed:
+## 🛠️ Installation & Setup
 
-- Python → For compression and optimization logic
-- Ghostscript → For PDF compression
-- FFMPEG → For media compression
+### Prerequisites
+-   **Node.js v18+**
+-   **Python 3.10+**
+-   **MongoDB** (Local or Atlas)
+-   **Ghostscript & FFMPEG** (Must be in system PATH)
 
-Verify installation using:
-python --version
-gs --version
-ffmpeg -version
+### Quick Start
 
+1.  **Clone the Repository**:
+    ```bash
+    git clone https://github.com/sRiSh-JaNa-tech/FileWiz.git
+    cd FileWiz
+    ```
+2.  **Install Node Dependencies**:
+    ```bash
+    npm install
+    ```
+3.  **Setup Python Environment**:
+    ```bash
+    pip install -r requirements.txt
+    ```
+4.  **Configure Environment**:
+    Create a `.env` file in the root directory:
+    ```env
+    MONGODB_URI=your_mongodb_connection_string
+    PORT=3000
+    ```
+5.  **Run the Server**:
+    ```bash
+    npm run dev
+    ```
 
-==================== ARCHITECTURE ====================
+---
 
-User → Upload File → Express Server → Python Processing Engine
-                                       ↓
-                              Ghostscript / FFMPEG
-                                       ↓
-                              Processed File → Response
+## 🛡️ Security & Authentication
 
-Node.js handles routing and file management
-Python handles heavy processing logic
-External tools handle format-specific optimizations
+FileWiz prioritizes user data integrity and security:
+-   **Bcrypt Encryption**: All user passwords are salted and hashed using industry-standard rounds.
+-   **Session Isolation**: Secure `express-session` implementation ensures that users can only access their own processing contexts.
+-   **Ephemeral Storage**: Files are processed in isolated `temp` directories and cleared periodically via an automated cleanup service.
 
+---
 
-==================== HOW TO RUN ====================
+## 🛠️ Technology Stack
 
-1. Clone the repository
-git clone https://github.com/sRiSh-JaNa-tech/FileWiz.git
-cd FileWiz
+-   **Frontend**: HTML5, Vanilla CSS (Premium UI), EJS Templating
+-   **Backend**: Node.js, Express.js
+-   **Database**: MongoDB (with Mongoose-like native drivers)
+-   **Processing Libs**: 
+    -   *Python*: PyMuPDF, PyPDF2, Pillow, Pytesseract, pdf2docx
+    -   *System*: Ghostscript, FFMPEG
+-   **Authentication**: Bcrypt, Express-Session, Cookie-Parser
 
-2. Install dependencies
-npm install
+---
 
-3. Install system tools
-- Install Python
-- Install Ghostscript
-- Install FFMPEG
+## 🤝 Support
 
-4. Start the server
-node src/server.js
+If you find FileWiz helpful, please consider giving the repository a ⭐ on GitHub!
 
-5. Open in browser
-http://localhost:3000
-
-
-==================== CURRENT FEATURES ====================
-
-- ZIP archive preview and editing without extraction
-- PDF compression (lossless)
-- PPT compression with multiple levels
-- Option to remove images from PPT
-- Secure file handling with auto cleanup
-
-
-==================== UPCOMING FEATURES ====================
-
-- Batch file processing
-- Compression analytics dashboard
-- User authentication and file history
-- Cloud storage integration (AWS S3 / MinIO)
-- Public API for developers
-- Chunk-based upload for large files
-- Smart compression engine (auto algorithm selection)
-
-
-==================== WHY FILEWIZ ====================
-
-- Multiple file operations in one platform
-- No heavy software installation required
-- Secure and temporary file processing
-- Uses industry-grade tools (Ghostscript, FFMPEG)
-- Designed for scalability
-
-==================== REPOSITORY ====================
-
-https://github.com/sRiSh-JaNa-tech/FileWiz
-
-
-==================== CONCLUSION ====================
-
-FileWiz is not just a file utility tool.
-It is a full-stack, production-oriented system that demonstrates:
-
-- Backend engineering
-- File processing pipelines
-- System integration
-- Performance optimization
-
-It solves real-world problems and showcases strong development skills.
-
-
-==================== SUPPORT ====================
-
-If you like this project, consider giving it a star on GitHub.
+<p align="center">Built for Developers & Power Users</p>
